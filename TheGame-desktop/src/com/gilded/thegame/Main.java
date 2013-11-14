@@ -8,8 +8,9 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "TheGame";
 		cfg.useGL20 = false;
-		cfg.width = 480;
-		cfg.height = 320;
+		//cfg.fullscreen = true;
+		cfg.width = 1920;
+		cfg.height = 1080;
 		
 		new LwjglApplication(new TheGame(), cfg);
 	}
