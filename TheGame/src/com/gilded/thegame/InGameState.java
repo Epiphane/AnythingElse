@@ -2,9 +2,11 @@ package com.gilded.thegame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class InGameState extends GameState {
 	private Player mainCharacter;
+	private Level currentLevel;
 	
 	public InGameState() {
 		float w = Gdx.graphics.getWidth();
@@ -12,13 +14,13 @@ public class InGameState extends GameState {
 		
 		camera = new OrthographicCamera(1, h/w);
 		
-		
+		mainCharacter = new Player(0,0);
+		currentLevel = new Level("testMap.tmx", mainCharacter);
 	}
 	
 	@Override
 	public void render() {
-		// TODO Auto-generated method stub
-		
+		currentLevel.render();
 	}
 
 	@Override
@@ -29,8 +31,7 @@ public class InGameState extends GameState {
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-		
+		currentLevel.dispose();
 	}
 
 }

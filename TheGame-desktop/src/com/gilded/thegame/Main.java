@@ -9,8 +9,9 @@ public class Main {
 		cfg.title = "TheGame";
 		cfg.useGL20 = false;
 		//cfg.fullscreen = true;
-		cfg.width = 1920;
-		cfg.height = 1080;
+		cfg.width = 1600;
+		cfg.height = 900;
+		cfg.vSyncEnabled = true;
 		
 		new LwjglApplication(new TheGame(), cfg);
 	}

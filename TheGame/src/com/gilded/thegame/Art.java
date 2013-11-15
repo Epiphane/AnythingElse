@@ -10,14 +10,14 @@ public class Art {
 	
 	public final static int DIRECTIONS = 4;
 	
-	public static TextureRegion[][] mainCharacterWalk;
+	public static TextureRegion[][] mainCharacter;
 	public static TextureRegion[][] mainCharacterStanding;
 	public static byte[][] mainCharacterMap;
 	
 	public static boolean loaded = false;
 	
 	public static void load () {
-		//mainCharacterWalk = split("res/player.png", 32, 30);
+		mainCharacter = split("img/player.png", 32, 30);
 		
 		loaded = true;
 	}
@@ -35,7 +35,6 @@ public class Art {
 
 	private static TextureRegion[][] split (String name, int width, int height, boolean flipX) {
 		Texture texture = new Texture(Gdx.files.internal(name));
-		System.out.println(name + ": " + texture.getWidth());
 		int xSlices = texture.getWidth() / width;
 		int ySlices = texture.getHeight() / height;
 		TextureRegion[][] res = new TextureRegion[xSlices][ySlices];
