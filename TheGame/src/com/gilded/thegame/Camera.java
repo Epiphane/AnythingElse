@@ -27,20 +27,20 @@ public class Camera extends OrthographicCamera {
 	
 	public void update() {
 		if(focus != null) {
-			dx = (focus.getX() - position.x) * TheGame.TILE_SIZE;
+			dx = (focus.getX() - position.x);
 			dy = (focus.getY() - position.y);
 			float scalefx = 0.10f;
 			float scalefy = 0.25f;
 
-			if(dx < 8 && dx > -8)
+			if(dx < 3 && dx > -3)
 				scalefx = 0.05f;
 			
-			if(dy < 6 && dx > -6)
+			if(dy < 3 && dx > -3)
 				scalefy = 0.15f;
-			
+						
 			dx *= scalefx;
 			dy *= scalefy;
-			
+
 			if(Math.abs(dx) > MAX_SCROLL_SPEED) dx *= MAX_SCROLL_SPEED / Math.abs(dx);
 			if(Math.abs(dy) > MAX_SCROLL_SPEED) dy *= MAX_SCROLL_SPEED / Math.abs(dy);
 
