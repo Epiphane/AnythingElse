@@ -1,7 +1,5 @@
 package com.gilded.thegame;
 
-import java.io.IOException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,7 +15,7 @@ public class Art {
 	public static boolean loaded = false;
 	
 	public static void load () {
-		mainCharacter = split("img/player.png", 32, 30);
+		mainCharacter = split("img/player.png", 16, 19);
 		
 		loaded = true;
 	}
@@ -25,7 +23,7 @@ public class Art {
 	public static TextureRegion load (String name, int width, int height) {
 		Texture texture = new Texture(Gdx.files.internal(name));
 		TextureRegion region = new TextureRegion(texture, 0, 0, width, height);
-		region.flip(false, true);
+		region.flip(false, false);
 		return region;
 	}
 
@@ -41,7 +39,7 @@ public class Art {
 		for (int x = 0; x < xSlices; x++) {
 			for (int y = 0; y < ySlices; y++) {
 				res[x][y] = new TextureRegion(texture, x * width, y * height, width, height);
-				res[x][y].flip(flipX, true);
+				res[x][y].flip(flipX, false);
 			}
 		}
 		return res;

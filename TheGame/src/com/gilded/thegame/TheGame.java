@@ -5,9 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 
 public class TheGame implements ApplicationListener {
-	public static final int GAME_WIDTH = 160;
-	public static final int GAME_HEIGHT = 144;
-	public final static int TILESIZE = 16;
+	public static final float GAME_WIDTH = 1600;
+	public static final float GAME_HEIGHT = 900;
+	public final static float TILE_SCALE = 3;
+	public final static float TILE_SIZE = 16;
 	
 	private GameState gameState;
 

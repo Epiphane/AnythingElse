@@ -1,7 +1,7 @@
 package com.gilded.thegame;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Entity extends Sprite {
 	/** What level am I in? */
@@ -11,11 +11,9 @@ public class Entity extends Sprite {
 	protected boolean onGround = false;
 	
 	/** Current Location (top left) */
-	private double x, y;
+	private float x, y;
 	/** Current direction */
-	protected double dx, dy;
-	/** Width and height of object */
-	private int w, h;
+	protected float dx, dy;
 	
 	/** "Bounciness" - taken from Metagun, have yet to test whether it helps with not being in blocks */
 	protected double bounce = 0.05;
@@ -23,8 +21,9 @@ public class Entity extends Sprite {
 	/**
 	 * Initializes the entity to a specific location.
 	 */
-	public Entity(int x, int y, Texture texture) {
+	public Entity(int x, int y, TextureRegion texture) {
 		super(texture);
+		setSize(getWidth() / TheGame.TILE_SIZE, getHeight() / TheGame.TILE_SIZE);
 		this.x = x;
 		this.y = y;
 	}
@@ -44,6 +43,11 @@ public class Entity extends Sprite {
 	public void tick() {
 		if(currentLevel == null) // Do nothing if we're not in a world
 			return;
+		
+		if(!onGround) {
+			if(dy > -0.1f) dy -= 0.1f;
+			tryMove(dx,dy);
+		}
 	}
 	
 	/**
@@ -52,43 +56,37 @@ public class Entity extends Sprite {
 	 * @param dx
 	 * @param dy
 	 */
-	public void tryMove(double dx, double dy) {
+	public void tryMove(float dx, float dy) {
+		float w = getWidth();
+		float h = getHeight();
 		onGround = false;
 		// First, try to move horizontally
 		if(currentLevel.canMove(this, x + dx, y, w, h, dx, 0)) {
 			x += dx;
 		}
 		else {
-			// Hit a wall
-			hitWall(dx, 0);
-			if(dx < 0) {
-				double xx = x / TheGame.TILESIZE;
-				dx = -(xx - (int) xx) * TheGame.TILESIZE;
+			// Slope?
+			if(currentLevel.canMove(this, x + dx, y + dx + 1, w, h , dx, 0)) {
+				x += dx;
+				y += Math.abs(dx);
 			}
+			// Nope. Definitely a wall
 			else {
-				double xx = (x + w) / TheGame.TILESIZE;
-				dx = TheGame.TILESIZE - (xx - (int) xx) / TheGame.TILESIZE;
+				// Hit a wall
+				hitWall(dx, 0);
 			}
-			dx *= -bounce;
 		}
 		
 		// Next, move vertically
-		if(currentLevel.canMove(this, x, y + dy, w, h, 0, dy)) {
+		if(currentLevel.canMove(this, x, y + dy, w, h, 0f, dy)) {
 			y += dy;
 		}
 		else {
+			if(dy > 0) onGround = true;
 			// Hit the wall
 			hitWall(0, dy);
-			if(dy < 0) {
-				double yy = y / TheGame.TILESIZE;
-				dy = -(yy - (int) yy) * TheGame.TILESIZE;
-			}
-			else {
-				double yy = (y + h) / TheGame.TILESIZE;
-				dy = TheGame.TILESIZE - (yy - (int) yy) / TheGame.TILESIZE;
-			}
-			dy *= -bounce;
 		}
+		setPosition(x, y);
 	}
 	
 	/**
@@ -97,7 +95,7 @@ public class Entity extends Sprite {
 	 * @param dx
 	 * @param dy
 	 */
-	public void hitWall(double dx, double dy) {
+	public void hitWall(float dx, float dy) {
 		if(dx != 0) this.dx = 0;
 		if(dy != 0) this.dy = 0;
 	}
@@ -107,5 +105,11 @@ public class Entity extends Sprite {
 	}
 	public void setCurrentLevel(Level currentLevel) {
 		this.currentLevel = currentLevel;
+	}
+	
+	public void setPosition(float x, float y) {
+		super.setPosition(x, y);
+		this.x = x;
+		this.y = y;
 	}
 }

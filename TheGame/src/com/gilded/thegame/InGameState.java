@@ -1,18 +1,13 @@
 package com.gilded.thegame;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class InGameState extends GameState {
 	private Player mainCharacter;
 	private Level currentLevel;
 	
-	public InGameState() {
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera(1, h/w);
+	public InGameState() {		
+		camera = new OrthographicCamera(TheGame.GAME_WIDTH, TheGame.GAME_HEIGHT);
 		
 		mainCharacter = new Player(0,0);
 		currentLevel = new Level("testMap.tmx", mainCharacter);
@@ -25,8 +20,7 @@ public class InGameState extends GameState {
 
 	@Override
 	public void tick(Input input) {
-		// TODO Auto-generated method stub
-		
+		currentLevel.tick(input);
 	}
 
 	@Override

@@ -1,14 +1,19 @@
 package com.gilded.thegame;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Polygon;
 
 public class Level {
-	private OrthographicCamera camera;
+	private Camera camera;
 	private TiledMap map;
+	private ArrayList<Polygon> polygonCollisions;
 	private OrthogonalTiledMapRenderer renderer;
 	
 	private SpriteBatch batch;
@@ -22,18 +27,32 @@ public class Level {
 	 * @param mainCharacter
 	 */
 	public Level(String mapName, Player mainCharacter) {
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 30, 20);
+		camera = new Camera(TheGame.GAME_WIDTH, TheGame.GAME_HEIGHT);
+		camera.setToOrtho(false, TheGame.GAME_WIDTH / (TheGame.TILE_SIZE * TheGame.TILE_SCALE), TheGame.GAME_HEIGHT / (TheGame.TILE_SIZE * TheGame.TILE_SCALE));
 		camera.update();
 		
 		this.mainCharacter = mainCharacter;
-		mainCharacter.setCurrentLevel(this);
+		this.mainCharacter.setCurrentLevel(this);
+		
+		this.mainCharacter.setOrigin(mainCharacter.getWidth()/2, mainCharacter.getHeight()/2);
+		this.mainCharacter.setPosition(45,23);
+		
+		System.out.println(this.mainCharacter.getWidth());
 		
 		map = new TmxMapLoader().load("maps/"+mapName);
-		renderer = new OrthogonalTiledMapRenderer(map, 1 / 16f);
+		renderer = new OrthogonalTiledMapRenderer(map, 1 / TheGame.TILE_SIZE);
 		renderer.setView(camera);
 		
 		batch = renderer.getSpriteBatch();
+		
+		camera.setFocus(this.mainCharacter, true);
+		
+		polygonCollisions = new ArrayList<Polygon>();
+		for(MapObject object : map.getLayers().get(2).getObjects()) {
+			if(object instanceof PolygonMapObject) {
+				polygonCollisions.add(((PolygonMapObject)object).getPolygon());
+			}
+		}
 	}
 	
 	/**
@@ -47,6 +66,8 @@ public class Level {
 	 * Draw the level!
 	 */
 	public void render() {
+		camera.update();
+		renderer.setView(camera);
 		renderer.render();
 		batch.begin();
 		mainCharacter.draw(batch);
@@ -57,9 +78,20 @@ public class Level {
 		map.dispose();
 	}
 
-	public boolean canMove(Entity entity, double xc, double yc, int w, int h,
-			double dx, double dy) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean canMove(Entity entity, float xc, float yc, float w, float h,
+			float dx, float dy) {
+		
+		float x0 = (xc) * TheGame.TILE_SIZE;
+		float y0 = (yc) * TheGame.TILE_SIZE;
+		float x1 = (xc + w) * TheGame.TILE_SIZE;
+		float y1 = (yc + h) * TheGame.TILE_SIZE;
+		
+		for(Polygon object : polygonCollisions) {
+			if(object.contains(x0, y0) || object.contains(x0, y1) || object.contains(x1, y0) || object.contains(x1, y1)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }
