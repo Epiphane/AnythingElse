@@ -46,6 +46,7 @@ public class Level {
 		batch = renderer.getSpriteBatch();
 		
 		camera.setFocus(this.mainCharacter, true);
+		camera.update();
 		
 		polygonCollisions = new ArrayList<Polygon>();
 		for(MapObject object : map.getLayers().get(2).getObjects()) {

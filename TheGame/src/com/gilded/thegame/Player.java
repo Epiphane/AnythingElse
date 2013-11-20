@@ -2,7 +2,7 @@ package com.gilded.thegame;
 
 
 public class Player extends Entity {
-	public static final float WALKSPEED = TheGame.TILE_SCALE / 32f;
+	public static final float WALKSPEED = TheGame.TILE_SCALE / 48f;
 	
 	public Player(int x, int y) {
 		super(x, y, Art.mainCharacter[0][0]);
