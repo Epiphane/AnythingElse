@@ -2,7 +2,8 @@ package com.gilded.thegame;
 
 
 public class Player extends Entity {
-	public static final float WALKSPEED = TheGame.TILE_SCALE / 48f;
+	public static final float JUMP_DY = 0.6f;
+	public static final float WALKSPEED = TheGame.TILE_SCALE / 16f;
 	
 	public Player(int x, int y) {
 		super(x, y, Art.mainCharacter[0][0]);
@@ -15,6 +16,11 @@ public class Player extends Entity {
 	 */
 	public void tick(Input input) {
 		super.tick();
+	
+		if(input.buttonStack.peek() == Input.UP) {
+			dy = JUMP_DY;
+			input.buttonStack.delete(Input.UP);
+		}
 		
 		// First, set direction we plan to move and do actions
 		if(input.buttonStack.peek() == Input.LEFT) {
@@ -25,10 +31,6 @@ public class Player extends Entity {
 		}
 		else {
 			dx = 0;
-		}
-	
-		if(input.buttonStack.peek() == Input.UP) {
-			dy = 0.5f;
 		}
 
 		tryMove(dx, dy);

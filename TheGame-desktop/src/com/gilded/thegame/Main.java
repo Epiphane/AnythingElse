@@ -9,6 +9,7 @@ public class Main {
 		cfg.title = "TheGame";
 		cfg.useGL20 = false;
 		cfg.fullscreen = false;
+		cfg.resizable = false;
 		cfg.width = 1600;
 		cfg.height = 900;
 		cfg.vSyncEnabled = true;

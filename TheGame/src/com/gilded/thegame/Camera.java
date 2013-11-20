@@ -10,7 +10,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  *
  */
 public class Camera extends OrthographicCamera {
-	public static final float MAX_SCROLL_SPEED = Player.WALKSPEED * TheGame.TILE_SIZE * TheGame.TILE_SCALE;
+	public static final float MAX_SCROLL_SPEED_X = Player.WALKSPEED * TheGame.TILE_SIZE * TheGame.TILE_SCALE;
+	public static final float MAX_SCROLL_SPEED_Y = -Entity.MAX_FALL_SPEED * TheGame.TILE_SIZE * TheGame.TILE_SCALE;
 	
 	private Sprite focus;
 	private float dx, dy;
@@ -29,32 +30,38 @@ public class Camera extends OrthographicCamera {
 		y = (int) position.y;
 	}
 	
-	public void update() {
+	public void update(int levelWidth, int levelHeight) {
 		if(focus != null) {
 			dx = focus.getX() * TheGame.TILE_SIZE * TheGame.TILE_SCALE - x;
 			dy = focus.getY() * TheGame.TILE_SIZE * TheGame.TILE_SCALE - y;
-			float scalefx = 0.10f;
-			float scalefy = 0.25f;
+			float scalefx = 0.050f;
+			float scalefy = 0.125f;
 
-			if(dx < 3 && dx > -3)
-				scalefx = 0.05f;
+			if(dx < 1 && dx > -1)
+				scalefx = 0.025f;
 			
-			if(dy < 3 && dx > -3)
-				scalefy = 0.15f;
+			if(dy < 1 && dx > -1)
+				scalefy = 0.075f;
 						
 			dx *= scalefx;
 			dy *= scalefy;
 
-			if(Math.abs(dx) > MAX_SCROLL_SPEED) dx *= MAX_SCROLL_SPEED / Math.abs(dx);
-			if(Math.abs(dy) > MAX_SCROLL_SPEED) dy *= MAX_SCROLL_SPEED / Math.abs(dy);
+			if(Math.abs(dx) > MAX_SCROLL_SPEED_X) dx *= MAX_SCROLL_SPEED_X / Math.abs(dx);
+			if(Math.abs(dy) > MAX_SCROLL_SPEED_Y) dy *= MAX_SCROLL_SPEED_Y / Math.abs(dy);
 
 			x += dx;
 			y += dy;
 		}
 		
+		// Check for out of bounds
+		if(x - TheGame.GAME_WIDTH / 2 < 0) x = TheGame.GAME_WIDTH / 2;
+		if((x + TheGame.GAME_WIDTH / 2) / (TheGame.TILE_SIZE * TheGame.TILE_SCALE) > levelWidth) x = (int) (levelWidth * TheGame.TILE_SCALE * TheGame.TILE_SIZE) - TheGame.GAME_WIDTH / 2;
+		if(y - TheGame.GAME_HEIGHT / 2 < 0) y = TheGame.GAME_HEIGHT / 2;
+		if((y + TheGame.GAME_HEIGHT / 2) / (TheGame.TILE_SIZE * TheGame.TILE_SCALE) > levelHeight) y = (int) (levelHeight * TheGame.TILE_SCALE * TheGame.TILE_SIZE) - TheGame.GAME_HEIGHT / 2;
+		
 		position.x = x / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
 		position.y = y / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
-		
+
 		super.update();
 	}
 
