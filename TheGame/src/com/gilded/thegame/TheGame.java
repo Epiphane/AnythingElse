@@ -45,12 +45,12 @@ public class TheGame implements ApplicationListener {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		accumulatedTime += Gdx.graphics.getDeltaTime();
-		while(accumulatedTime > 1.0f / 60.0f && running) {
+		//while(accumulatedTime > 1.0f / 60.0f && running) {
 			gameState.tick(input);
 			input.tick();
 			accumulatedTime -= 1.0f / 60.0f;
 			
-		}
+		//}
 		gameState.render();
 	}
 	
