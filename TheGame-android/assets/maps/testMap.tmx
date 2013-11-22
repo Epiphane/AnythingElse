@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="100" height="50" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" width="52" height="21" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="tileset" tilewidth="16" tileheight="16">
   <image source="../img/tileset.png" width="128" height="32"/>
  </tileset>
- <layer name="Background" width="100" height="50">
+ <layer name="Background" width="52" height="21">
   <data encoding="base64" compression="zlib">
-   eJztw0ENAAAMA6Grf9OTsQ8krJqqqqqqqqqqqqqqqqqqqqqqqqqq7w+SZROJ
+   eJztwwENAAAMw6DOv+kLOSSsmqqqquqjB3/UBEU=
   </data>
  </layer>
- <layer name="Platform" width="100" height="50">
+ <layer name="Platform" width="52" height="21">
   <data encoding="base64" compression="zlib">
-   eJzt1ssKgzAQBdC4sP7/HxcpwjSdiKTpA3IODI2CLu7V2FIAAAAAAAAAAACAd9zC8HtrmFG28txz78wo9nHksHXcJ3awDpoZZTn0PMujOpi9j90nsrw6S7Vewnp23+4h5l+f08dD3Cuy/WPEHpS9C7poWxu/x/pK3ll/hyz/uhte1d/UK/mfXbfL3gP592nlX5Lj1rU7e9NYM/8XBQAAAADgf90BGLMEbg==
+   eJztlNEKgCAMReeD+f9/HD4ItzFruS0wdmC0Asc9aRElSZIku3JA/YEK5UWj63tarRXQZ8xpRofqVFYf7vWmvBw8zktEFm0V1hforXztgfn5Mw8fdJL8PJzHDL4XES7oJF01PjTpcYaUn7tFwL9JTf67dR1pH6LyPzHLT8L9bG0n8mytYPmXJsmunNgnBG4=
   </data>
  </layer>
- <objectgroup name="Platform" width="100" height="50">
-  <object name="Platform" x="528" y="448">
+ <objectgroup name="Platform" width="52" height="21">
+  <object name="Platform" x="112" y="160">
    <polygon points="64,0 256,0 272,-16 304,-16 320,-32 592,-32 592,16 -33,16 -32,-48 16,-48 16,-16 48,-16"/>
   </object>
+  <object name="Spawn" x="256" y="128" width="16" height="16"/>
  </objectgroup>
 </map>
