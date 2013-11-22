@@ -59,8 +59,8 @@ public class Camera extends OrthographicCamera {
 		if(y - TheGame.GAME_HEIGHT / 2 < 0) y = TheGame.GAME_HEIGHT / 2;
 		if((y + TheGame.GAME_HEIGHT / 2) / (TheGame.TILE_SIZE * TheGame.TILE_SCALE) > levelHeight) y = (int) (levelHeight * TheGame.TILE_SCALE * TheGame.TILE_SIZE) - TheGame.GAME_HEIGHT / 2;
 		
-		position.x = x / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
-		position.y = y / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
+//		position.x = x / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
+//		position.y = y / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
 
 		super.update();
 	}
@@ -74,6 +74,8 @@ public class Camera extends OrthographicCamera {
 		if(cut) {
 			this.x = (int) (focus.getX() * TheGame.TILE_SIZE * TheGame.TILE_SCALE);
 			this.y = (int) (focus.getY() * TheGame.TILE_SIZE * TheGame.TILE_SCALE);
+			position.x = x / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
+			position.y = y / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
 		}
 	}
 }
