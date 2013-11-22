@@ -16,6 +16,11 @@ public class Level {
 	private ArrayList<Polygon> polygonCollisions;
 	private OrthogonalTiledMapRenderer renderer;
 	
+	/** 
+	 * Width and height of the level in tiles
+	 */
+	private int width, height;
+	
 	private SpriteBatch batch;
 	
 	private Player mainCharacter;
@@ -29,7 +34,7 @@ public class Level {
 	public Level(String mapName, Player mainCharacter) {
 		camera = new Camera(TheGame.GAME_WIDTH, TheGame.GAME_HEIGHT);
 		camera.setToOrtho(false, TheGame.GAME_WIDTH / (TheGame.TILE_SIZE * TheGame.TILE_SCALE), TheGame.GAME_HEIGHT / (TheGame.TILE_SIZE * TheGame.TILE_SCALE));
-		camera.update();
+		camera.update(width, height);
 		
 		this.mainCharacter = mainCharacter;
 		this.mainCharacter.setCurrentLevel(this);
@@ -40,13 +45,19 @@ public class Level {
 		System.out.println(this.mainCharacter.getWidth());
 		
 		map = new TmxMapLoader().load("maps/"+mapName);
+		
+		// Set size
+		width = (Integer) map.getProperties().get("width");
+		height = (Integer) map.getProperties().get("height");
+		
+		// Create renderer
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / TheGame.TILE_SIZE);
 		renderer.setView(camera);
 		
 		batch = renderer.getSpriteBatch();
 		
 		camera.setFocus(this.mainCharacter, true);
-		camera.update();
+		camera.update(width, height);
 		
 		polygonCollisions = new ArrayList<Polygon>();
 		for(MapObject object : map.getLayers().get(2).getObjects()) {
@@ -67,7 +78,7 @@ public class Level {
 	 * Draw the level!
 	 */
 	public void render() {
-		camera.update();
+		camera.update(width, height);
 		renderer.setView(camera);
 		renderer.render();
 		batch.begin();
