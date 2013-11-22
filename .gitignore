@@ -28,6 +28,15 @@ local.properties
 # PDT-specific
 .buildpath
 
+#################
+## GWT STUFF
+#################
+.gwt-log
+TheGame-html/war/
+TheGame-html/.gwt/
+TheGame-html/gwt-unitCache/
+
+
 
 #################
 ## Visual Studio
