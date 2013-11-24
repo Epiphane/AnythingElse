@@ -90,8 +90,7 @@ public class Level {
 		map.dispose();
 	}
 
-	public boolean canMove(Entity entity, float xc, float yc, float w, float h,
-			float dx, float dy) {
+	public boolean canMove(Entity entity, float xc, float yc, float w, float h) {
 		
 		float x0 = (xc) * TheGame.TILE_SIZE;
 		float y0 = (yc) * TheGame.TILE_SIZE;
