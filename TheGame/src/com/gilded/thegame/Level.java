@@ -20,7 +20,7 @@ public class Level {
 	 * Width and height of the level in tiles
 	 */
 	private int width, height;
-	
+
 	private SpriteBatch batch;
 	
 	private Player mainCharacter;
@@ -43,8 +43,7 @@ public class Level {
 		
 		this.mainCharacter.setOrigin(mainCharacter.getWidth()/2, mainCharacter.getHeight()/2);
 
-		MapObject spawn = map.getLayers().get(3).getObjects().get("Spawn");
-		this.mainCharacter.setPosition((Integer) spawn.getProperties().get("x") / TheGame.TILE_SIZE, (Integer) spawn.getProperties().get("y") / TheGame.TILE_SIZE);
+		placeCharacter();
 		
 		// Set size
 		width = (Integer) map.getProperties().get("width");
@@ -105,5 +104,36 @@ public class Level {
 		}
 		
 		return true;
+	}
+	
+	public void placeCharacter() {
+		MapObject spawn = map.getLayers().get(3).getObjects().get("Spawn");
+		this.mainCharacter.setPosition((Integer) spawn.getProperties().get("x") / TheGame.TILE_SIZE, (Integer) spawn.getProperties().get("y") / TheGame.TILE_SIZE);
+		
+		camera.rush();
+	}
+	
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public void setCamera(Camera camera) {
+		this.camera = camera;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
 	}
 }

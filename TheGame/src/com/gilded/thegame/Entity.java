@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Entity extends Sprite {
 	public static final float MAX_FALL_SPEED = -0.5f;
-	public static final float GRAVITY = -0.030f;
+	public static final float GRAVITY = -0.020f;
 	
 	/** What level am I in? */
 	protected Level currentLevel;
@@ -14,7 +14,8 @@ public class Entity extends Sprite {
 	protected boolean onGround = false;
 
 	/** Current Location (top left) */
-	private float x, y;
+	protected float x;
+	protected float y;
 	/** Current direction */
 	protected float dx, dy;
 
@@ -104,8 +105,10 @@ public class Entity extends Sprite {
 	public void hitWall(float dx, float dy) {
 		if (dx != 0)
 			this.dx = 0;
-		if (dy != 0)
+		if (dy != 0) {
 			this.dy = 0;
+			onGround = true;
+		}
 	}
 
 	public Level getCurrentLevel() {
