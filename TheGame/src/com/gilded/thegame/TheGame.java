@@ -49,9 +49,8 @@ public class TheGame implements ApplicationListener {
 			gameState.tick(input);
 			input.tick();
 			accumulatedTime -= 1.0f / 60.0f;	
-			gameState.render();
 		}
-		//gameState.render();
+		gameState.render();
 	}
 	
 	public void setScreen(GameState newState) {

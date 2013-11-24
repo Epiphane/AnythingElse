@@ -36,15 +36,15 @@ public class Level {
 		camera.setToOrtho(false, TheGame.GAME_WIDTH / (TheGame.TILE_SIZE * TheGame.TILE_SCALE), TheGame.GAME_HEIGHT / (TheGame.TILE_SIZE * TheGame.TILE_SCALE));
 		camera.update(width, height);
 		
+		map = new TmxMapLoader().load("maps/"+mapName);
+		
 		this.mainCharacter = mainCharacter;
 		this.mainCharacter.setCurrentLevel(this);
 		
 		this.mainCharacter.setOrigin(mainCharacter.getWidth()/2, mainCharacter.getHeight()/2);
-		this.mainCharacter.setPosition(45,23);
-		
-		System.out.println(this.mainCharacter.getWidth());
-		
-		map = new TmxMapLoader().load("maps/"+mapName);
+
+		MapObject spawn = map.getLayers().get(3).getObjects().get("Spawn");
+		this.mainCharacter.setPosition((Integer) spawn.getProperties().get("x") / TheGame.TILE_SIZE, (Integer) spawn.getProperties().get("y") / TheGame.TILE_SIZE);
 		
 		// Set size
 		width = (Integer) map.getProperties().get("width");
