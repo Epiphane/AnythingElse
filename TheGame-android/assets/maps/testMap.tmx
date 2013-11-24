@@ -10,12 +10,12 @@
  </layer>
  <layer name="Platform" width="52" height="22">
   <data encoding="base64" compression="zlib">
-   eJztlNEKgCAMReeD+f9/HD4ItzHLdIuKe2C0Asc9aYkQQggh72CD+gMZyosix/c0WzOgT5tTFh2yU636aK875eXgcV4isoxWUn2CfpWnPTC/fubhg06Wn4dzm6H3IsIFnazriI90epxh5dduEehvciT/2bqKtQ9R+a/o5Rfjvre2Enm2Zlj5lxLyVXbY9wRu
+   eJztlNEKgCAMRSdk/f8fhw/CbcwcbouKHRitwHEPmkRJkniyQf2BCvUH0ufdpM+cg673zGqtgD59zm50qE5l9ZHctOXl4HFeIrJoq7C+QG/laQ/Mz795+KCT5Ofh3GfwvYhwQSfpqfGhQY8zpPzcLQL+T2ry361rSPsQlX/GKD8J76O1jciztYLlLk2Sr3ICJy4EYA==
   </data>
  </layer>
  <objectgroup name="Platform" width="52" height="22">
   <object name="Platform" x="112" y="176">
-   <polygon points="64,0 256,0 272,-16 304,-16 320,-32 592,-32 592,16 -33,16 -32,-48 16,-48 16,-16 48,-16"/>
+   <polygon points="64,0 256,0 272,-16 304,-16 320,-32 592,-32 592,16 -33,16 -32,-112 16,-112 16,-16 48,-16"/>
   </object>
  </objectgroup>
  <objectgroup name="Object Layer 2" width="52" height="22">
