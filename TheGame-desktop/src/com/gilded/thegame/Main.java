@@ -8,10 +8,10 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "TheGame";
 		cfg.useGL20 = false;
-		cfg.fullscreen = false;
+		cfg.fullscreen = true;
 		cfg.resizable = false;
-		cfg.width = 1600;
-		cfg.height = 900;
+		cfg.width = 1920;
+		cfg.height = 1080;
 		cfg.vSyncEnabled = true;
 		
 		new LwjglApplication(new TheGame(), cfg);

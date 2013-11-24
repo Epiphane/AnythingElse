@@ -50,7 +50,7 @@ public class Entity extends Sprite {
 	public void tick() {
 		if (currentLevel == null) // Do nothing if we're not in a world
 			return;
-
+		
 		if (!onGround) {
 			if (dy > MAX_FALL_SPEED)
 				dy += GRAVITY;
@@ -68,47 +68,53 @@ public class Entity extends Sprite {
 		float w = getWidth();
 		float h = getHeight();
 		onGround = false;
+		
 		// First, try to move horizontally
-		if (currentLevel.canMove(this, x + dx, y, w, h, dx, 0)) {
+		if (currentLevel.canMove(this, x + dx, y, w, h)) {
 			x += dx;
 		} else {
 			// Slope?
-			if (currentLevel.canMove(this, x + dx, y + dx + 0.5f, w, h, dx, 0)) {
+			if (currentLevel.canMove(this, x + dx, y + dx + 0.5f, w, h)) {
 				x += dx;
 				y += Math.abs(dx);
 			}
 			// Nope. Definitely a wall
 			else {
 				// Hit a wall
-				hitWall(dx, 0);
+				hitWall(dx, dy);
 			}
 		}
 
 		// Next, move vertically
-		if (currentLevel.canMove(this, x, y + dy, w, h, 0f, dy)) {
+		if (currentLevel.canMove(this, x, y + dy, w, h)) {
 			y += dy;
 		} else {
 			if (dy > 0)
 				onGround = true;
 			// Hit the wall
-			hitWall(0, dy);
+			hitWall(dx, dy);
 		}
 		setPosition(x, y);
 	}
 
 	/**
-	 * Called when you run into a wall s
+	 * Called when you run into a wall. Basically just "backs you up" until
+	 * you're not colliding with the wall anymore.
 	 * 
 	 * @param dx
 	 * @param dy
 	 */
 	public void hitWall(float dx, float dy) {
-		if (dx != 0)
-			this.dx = 0;
-		if (dy != 0) {
-			this.dy = 0;
-			onGround = true;
+		x += dx;
+		y += dy;
+		
+		while(!currentLevel.canMove(this, x, y, getWidth(), getHeight())) {
+			x -= dx * 0.01;
+			y -= dy * 0.01;
 		}
+
+		if (dy != 0)
+			onGround = true;
 	}
 
 	public Level getCurrentLevel() {
