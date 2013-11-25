@@ -3,12 +3,16 @@ package com.gilded.thegame;
 
 
 public class Player extends Entity {
+	public static final int BASIC = 0;
+	
 	public static final float JUMP_DY = 0.3f;
 	public static final float WALKSPEED = TheGame.TILE_SCALE / 24f;
 	
 	private int frame;
 	private boolean walking;
 	private boolean facingRight;
+	
+	private int state = BASIC;
 	
 	public Player(int x, int y) {
 		super(x, y, Art.mainCharacter[0][0]);
