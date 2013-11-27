@@ -1,5 +1,7 @@
 package com.gilded.thegame;
 
+import java.awt.Point;
+
 
 
 public class Player extends Entity {
@@ -14,6 +16,9 @@ public class Player extends Entity {
 	
 	private int state = BASIC;
 	
+	/* Dashing through the snow... */
+	private boolean dashing = false;
+	
 	public Player(int x, int y) {
 		super(x, y, Art.mainCharacter[0][0]);
 	}
@@ -27,19 +32,26 @@ public class Player extends Entity {
 		super.tick();
 	
 		// Jump
-		if(input.buttonStack.peek() == Input.UP && onGround) {
+		if(input.buttonStack.shouldJump() && onGround) {
 			dy = JUMP_DY;
-			input.buttonStack.delete(Input.UP);
+		}
+		
+		// Daaash!
+		//TODO: Change to a switch/case based on what form the player is in
+		if(input.buttonStack.peek() == Input.DASH && !dashing) {
+			//Initiate dash based on what directions the player is holding
+			Point dir = input.buttonStack.dominantDirection();
+			System.out.println("Direction: " + dir.x + ", " + dir.y);
 		}
 		
 		// First, set direction we plan to move and do actions
-		if(input.buttonStack.peek() == Input.LEFT && dx > -WALKSPEED) {
+		if(input.buttonStack.dominantDirection().x == -1 && dx > -WALKSPEED) {
 			dx -= WALKSPEED / 10f;
 			walking = true;
 			if(dx < 0)
 				facingRight = false;
 		}
-		else if(input.buttonStack.peek() == Input.RIGHT && dx < WALKSPEED) {
+		else if(input.buttonStack.dominantDirection().x == 1 && dx < WALKSPEED) {
 			dx += WALKSPEED / 10f;
 			walking = true;
 			if(dx > 0)

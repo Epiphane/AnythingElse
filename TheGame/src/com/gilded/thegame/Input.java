@@ -1,15 +1,23 @@
 package com.gilded.thegame;
 
-import com.badlogic.gdx.InputProcessor;
+import java.awt.Point;
+
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 
 public class Input implements InputProcessor {
 	public class InputStack {
 		private class Node {
 			int button;
 			Node next;
+			/** This is a weird one.  We DON'T want to jump multiple times from one
+			 * "up" press, but we still want to be able to use the "up" press when
+			 * we are figuring out the direction to use an ability. So, this prevents
+			 * a jump from being used multiple times but keeps it in the stack!*/
+			boolean usedJump;
 			public Node(int button) {
 				this.button = button;
+				usedJump = false;
 			}
 		}
 		
@@ -43,15 +51,82 @@ public class Input implements InputProcessor {
 		public int peek() {
 			return (currentButton == null) ? -1 : currentButton.button;
 		}
+		
+		/** @return True if there's an unused UP in the stack, false otherwise */
+		public boolean shouldJump() {
+			Node upNode = find(UP);
+			if(upNode != null && !upNode.usedJump) {
+				upNode.usedJump = true;
+				return true;
+			}
+			return false;
+		}
+		
+		/** Returns the node containing "button," or null if it's not there */
+		private Node find(int button) {
+			Node cursor = currentButton;
+			while(cursor != null) {
+				if(cursor.button == button) return cursor;
+				cursor = cursor.next;
+			}
+			
+			return null;
+		}
+		
+		/** Returns the "dominant direction." That is, the current direction the user would expect
+		 * to go if they pressed "dash" while holding the directions they are now. If the user is pressing
+		 * no direction keys, default to DEFAULT_DIRECTION (below).  If the user is pressing two to four
+		 * opposing directions, use the one they pressed LAST. */
+		public Point dominantDirection() {
+			Node cursor = currentButton;
+			
+			Point result = new Point(0, 0);
+			Point lastPressed = null;
+			
+			while(cursor != null) {
+				if(cursor.button <= LEFT) {
+					Point pressedDir = Utility.offsetFromDirection(cursor.button);
+					result.translate(pressedDir.x, pressedDir.y);
+					
+					if(lastPressed == null)
+						lastPressed = pressedDir;
+				}
+			
+				cursor = cursor.next;
+			}
+			
+			// There was a tie! Either no buttons are being pressed, or 2-4 are conflicting.
+			if(result.equals(new Point(0, 0))) {
+				// No buttons
+				if(lastPressed == null)
+					return Utility.offsetFromDirection(DEFAULT_DIRECTION);
+				
+				// 2-4 butons
+				return lastPressed;
+			}
+			
+			// Everything is normal. Do not worry.
+			return result;
+		}
 	}
 	
 	// Static key values
+	// Directions are defined as follows:
+	//
+	//  7 0 1
+	//  6 X 2
+	//  5 4 3
+	//
 	public static final int UP = 0;
-	public static final int DOWN = 1;
-	public static final int LEFT = 2;
-	public static final int RIGHT = 3;
-	public static final int ACTION = 4;
-	public static final int RUN = 5;
+	public static final int RIGHT = 2;
+	public static final int DOWN = 4;
+	public static final int LEFT = 6;
+	public static final int ACTION = 8;
+	public static final int RUN = 9;
+	public static final int DASH = 10;
+	
+    /** Defines the direction to perform an action if the user has nothing held down. */
+	public final static int DEFAULT_DIRECTION = UP;
 	
 	// Button arrays
 	public boolean[] buttons = new boolean[32];
@@ -80,6 +155,7 @@ public class Input implements InputProcessor {
 		if (key == Keys.DPAD_DOWN)  button = DOWN;
 		if (key == Keys.DPAD_LEFT)  button = LEFT;
 		if (key == Keys.DPAD_RIGHT) button = RIGHT;
+		if (key == Keys.SPACE)      button = DASH;
 		if (key == Keys.Z) 			button = ACTION;
 		
 		// If it's recognized, set the state in the array

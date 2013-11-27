@@ -107,7 +107,8 @@ public class Level {
 	
 	public void placeCharacter() {
 		MapObject spawn = map.getLayers().get(3).getObjects().get("Spawn");
-		this.mainCharacter.setPosition((Integer) spawn.getProperties().get("x") / TheGame.TILE_SIZE, (Integer) spawn.getProperties().get("y") / TheGame.TILE_SIZE);
+		this.mainCharacter.setPosition((Integer) spawn.getProperties().get("x") / TheGame.TILE_SIZE, 
+				(Integer) spawn.getProperties().get("y") / TheGame.TILE_SIZE);
 		
 		camera.rush();
 	}
