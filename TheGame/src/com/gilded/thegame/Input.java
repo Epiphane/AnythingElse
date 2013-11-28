@@ -1,7 +1,5 @@
 package com.gilded.thegame;
 
-import java.awt.Point;
-
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
@@ -77,7 +75,7 @@ public class Input implements InputProcessor {
 		 * to go if they pressed "dash" while holding the directions they are now. If the user is pressing
 		 * no direction keys, default to DEFAULT_DIRECTION (below).  If the user is pressing two to four
 		 * opposing directions, use the one they pressed LAST. */
-		public Point dominantDirection() {
+		public Point airDirection() {
 			Node cursor = currentButton;
 			
 			Point result = new Point(0, 0);
@@ -86,7 +84,7 @@ public class Input implements InputProcessor {
 			while(cursor != null) {
 				if(cursor.button <= LEFT) {
 					Point pressedDir = Utility.offsetFromDirection(cursor.button);
-					result.translate(pressedDir.x, pressedDir.y);
+					result.addPoint(pressedDir);
 					
 					if(lastPressed == null)
 						lastPressed = pressedDir;
@@ -107,6 +105,21 @@ public class Input implements InputProcessor {
 			
 			// Everything is normal. Do not worry.
 			return result;
+		}
+		
+		/** Should I walk left, right, or sit perfectly still, contemplating
+		 * the meaninglessness of existence? */
+		public int walkDirection() {
+			Node cursor = currentButton;
+			while(cursor != null) {
+				if(cursor.button == LEFT)
+					return -1;
+				if(cursor.button == RIGHT)
+					return 1;
+				cursor = cursor.next;
+			}
+			
+			return 0;
 		}
 	}
 	

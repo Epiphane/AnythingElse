@@ -1,9 +1,5 @@
 package com.gilded.thegame;
 
-import java.awt.Point;
-
-
-
 public class Player extends Entity {
 	public static final int BASIC = 0;
 	
@@ -18,6 +14,9 @@ public class Player extends Entity {
 	
 	/* Dashing through the snow... */
 	private boolean dashing = false;
+	public static final float DASHSPEED = 0.5f;
+	public static final int DASH_TICKS = 30;
+	public int dashTicksRemaining;
 	
 	public Player(int x, int y) {
 		super(x, y, Art.mainCharacter[0][0]);
@@ -39,19 +38,20 @@ public class Player extends Entity {
 		// Daaash!
 		//TODO: Change to a switch/case based on what form the player is in
 		if(input.buttonStack.peek() == Input.DASH && !dashing) {
-			//Initiate dash based on what directions the player is holding
-			Point dir = input.buttonStack.dominantDirection();
-			System.out.println("Direction: " + dir.x + ", " + dir.y);
+			// Initiate dash based on what directions the player is holding
+			Point dir = input.buttonStack.airDirection();
+
+			
 		}
 		
 		// First, set direction we plan to move and do actions
-		if(input.buttonStack.dominantDirection().x == -1 && dx > -WALKSPEED) {
+		if(input.buttonStack.walkDirection() == -1 && dx > -WALKSPEED) {
 			dx -= WALKSPEED / 10f;
 			walking = true;
 			if(dx < 0)
 				facingRight = false;
 		}
-		else if(input.buttonStack.dominantDirection().x == 1 && dx < WALKSPEED) {
+		else if(input.buttonStack.walkDirection() == 1 && dx < WALKSPEED) {
 			dx += WALKSPEED / 10f;
 			walking = true;
 			if(dx > 0)

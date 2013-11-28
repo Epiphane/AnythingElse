@@ -1,7 +1,5 @@
 package com.gilded.thegame;
 
-import java.awt.Point;
-
 public class Utility {
 	/**
 	 * Converts from a point-offset to a direction integer
