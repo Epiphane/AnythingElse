@@ -15,7 +15,8 @@ public class Player extends Entity {
 	/* Dashing through the snow... */
 	private boolean dashing = false;
 	public static final float DASHSPEED = 0.5f;
-	public static final int DASH_TICKS = 30;
+	public static final int DASH_TICKS = 10;
+	public static final float DASH_FRICTION = 0.9f;
 	public int dashTicksRemaining;
 	
 	public Player(int x, int y) {
@@ -47,7 +48,7 @@ public class Player extends Entity {
 			dy = DASHSPEED * dir.y;
 		}
 		
-		//Handle gravity
+		// Handle gravity
 		if (!onGround && !dashing) {
 			if (dy > MAX_FALL_SPEED)
 				dy += GRAVITY;
@@ -82,6 +83,9 @@ public class Player extends Entity {
 			dashTicksRemaining--;
 			if(dashTicksRemaining == 0) {
 				dashing = false;
+				// Slow doooown
+				dy *= DASH_FRICTION;
+				dx *= DASH_FRICTION;
 			}
 		}
 		

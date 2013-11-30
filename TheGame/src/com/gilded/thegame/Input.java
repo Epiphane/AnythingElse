@@ -1,6 +1,7 @@
 package com.gilded.thegame;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
 public class Input implements InputProcessor {
@@ -197,6 +198,11 @@ public class Input implements InputProcessor {
 	}
 	
 	public boolean keyDown(int keycode) {
+		// Bind escape to close the game
+		if(keycode == Keys.ESCAPE) {
+			Gdx.app.exit();
+		}
+		
 		set(keycode, true);
 		return false;
 	}
