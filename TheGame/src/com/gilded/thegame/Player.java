@@ -41,30 +41,49 @@ public class Player extends Entity {
 			// Initiate dash based on what directions the player is holding
 			Point dir = input.buttonStack.airDirection();
 
-			
+			dashing = true;
+			dashTicksRemaining = DASH_TICKS;
+			dx = DASHSPEED * dir.x;
+			dy = DASHSPEED * dir.y;
+		}
+		
+		//Handle gravity
+		if (!onGround && !dashing) {
+			if (dy > MAX_FALL_SPEED)
+				dy += GRAVITY;
 		}
 		
 		// First, set direction we plan to move and do actions
-		if(input.buttonStack.walkDirection() == -1 && dx > -WALKSPEED) {
-			dx -= WALKSPEED / 10f;
-			walking = true;
-			if(dx < 0)
-				facingRight = false;
-		}
-		else if(input.buttonStack.walkDirection() == 1 && dx < WALKSPEED) {
-			dx += WALKSPEED / 10f;
-			walking = true;
-			if(dx > 0)
-				facingRight = true;
-		}
-		else {
-			if(dx > WALKSPEED / 2) dx -= WALKSPEED / 2;
-			else if(dx > -WALKSPEED / 4) dx = 0;
-			else dx += WALKSPEED / 4;
-			walking = false;
+		if(!dashing) {
+			if(input.buttonStack.walkDirection() == -1 && dx > -WALKSPEED) {
+				dx -= WALKSPEED / 10f;
+				walking = true;
+				if(dx < 0)
+					facingRight = false;
+			}
+			else if(input.buttonStack.walkDirection() == 1 && dx < WALKSPEED) {
+				dx += WALKSPEED / 10f;
+				walking = true;
+				if(dx > 0)
+					facingRight = true;
+			}
+			else {
+				if(dx > WALKSPEED / 2) dx -= WALKSPEED / 2;
+				else if(dx > -WALKSPEED / 4) dx = 0;
+				else dx += WALKSPEED / 4;
+				walking = false;
+			}
 		}
 
 		tryMove(dx, dy);
+		
+		// Iterate dashingness
+		if(dashing) {
+			dashTicksRemaining--;
+			if(dashTicksRemaining == 0) {
+				dashing = false;
+			}
+		}
 		
 		// Run the animations
 		if(walking) {

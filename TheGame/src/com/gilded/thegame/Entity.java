@@ -50,12 +50,6 @@ public class Entity extends Sprite {
 	public void tick() {
 		if (currentLevel == null) // Do nothing if we're not in a world
 			return;
-		
-		if (!onGround) {
-			if (dy > MAX_FALL_SPEED)
-				dy += GRAVITY;
-			// tryMove(dx,dy);
-		}
 	}
 
 	/**
