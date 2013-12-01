@@ -19,6 +19,10 @@ public class Player extends Entity {
 	public static final float DASH_FRICTION = 0.9f;
 	public int dashTicksRemaining;
 	
+	/* Glide stuffz */
+	private boolean isGliding = false;
+	
+	
 	public Player(int x, int y) {
 		super(x, y, Art.mainCharacter[0][0]);
 	}
@@ -28,7 +32,8 @@ public class Player extends Entity {
 	 * 
 	 * @param input
 	 */
-	public void tick(Input input) {
+	public void tick(Input input)
+	{
 		super.tick();
 	
 		// Jump
@@ -87,6 +92,11 @@ public class Player extends Entity {
 				dy *= DASH_FRICTION;
 				dx *= DASH_FRICTION;
 			}
+		}
+		
+		if(input.buttonStack.peek() == Input.GLIDE && !onGround)
+		{
+		    System.out.println("Gliding!");
 		}
 		
 		// Run the animations
