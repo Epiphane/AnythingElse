@@ -148,6 +148,7 @@ public class Input implements InputProcessor {
 	public static final int ACTION = 8;
 	public static final int RUN = 9;
 	public static final int DASH = 10;
+	public static final int GLIDE = 11;
 	
     /** Defines the direction to perform an action if the user has nothing held down. */
 	public final static int DEFAULT_DIRECTION = UP;
@@ -181,6 +182,7 @@ public class Input implements InputProcessor {
 		if (key == Keys.DPAD_RIGHT) button = RIGHT;
 		if (key == Keys.SPACE)      button = DASH;
 		if (key == Keys.Z) 			button = ACTION;
+		if (key == Keys.S)          button = GLIDE;
 		
 		// If it's recognized, set the state in the array
 		if(button >= 0) {
@@ -192,14 +194,15 @@ public class Input implements InputProcessor {
 			}
 		}
 		
-		//Running is a special case.  We just want to toggle running based on 
+		//Running is a special case.  We just want to toggle running based on
+		//Did you forget about this comment halfway through?                 ^^^^
 	}
 	
 	/**
 	 * Set the button inputs to the past
 	 */
 	public void tick() {
-		for (int i = 0; i < buttons.length; i ++)
+		for (int i = 0; i < buttons.length; i++)
 			oldButtons[i] = buttons[i];
 	}
 	
