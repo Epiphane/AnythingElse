@@ -21,6 +21,7 @@ public class Player extends Entity {
 	
 	/* Glide stuffz */
 	private boolean isGliding = false;
+	public static final float glideFallSlowFactor = 0.5f;
 	
 	
 	public Player(int x, int y) {
@@ -96,7 +97,7 @@ public class Player extends Entity {
 		
 		if(input.buttonStack.peek() == Input.GLIDE && !onGround)
 		{
-		    System.out.println("Gliding!");
+		    glide();
 		}
 		
 		// Run the animations
@@ -112,5 +113,12 @@ public class Player extends Entity {
 		if(y < 0) {
 			currentLevel.placeCharacter();
 		}
+	}
+	
+	private void glide()
+	{
+	    isGliding = true;
+	    
+	    dy *= 0.5f ;
 	}
 }
