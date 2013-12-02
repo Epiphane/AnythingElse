@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "TheGame";
-		cfg.useGL20 = false;
+		cfg.useGL20 = true;
 		cfg.fullscreen = true;
 		cfg.resizable = false;
 		cfg.width = 1920;
@@ -15,5 +15,5 @@ public class Main {
 		cfg.vSyncEnabled = true;
 		
 		new LwjglApplication(new TheGame(), cfg);
-	}
+ 	}
 }

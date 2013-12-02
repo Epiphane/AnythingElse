@@ -61,6 +61,16 @@ public class Input implements InputProcessor {
 			return false;
 		}
 		
+		/** @return True if there's an unused DASH in the stack, false otherwise */
+		public boolean shouldDash() {
+			Node dashNode = find(DASH);
+			if(dashNode != null && !dashNode.usedJump) {
+				dashNode.usedJump = true;
+				return true;
+			}
+			return false;
+		}
+		
 		/** Returns the node containing "button," or null if it's not there */
 		private Node find(int button) {
 			Node cursor = currentButton;
@@ -100,7 +110,7 @@ public class Input implements InputProcessor {
 				if(lastPressed == null)
 					return Utility.offsetFromDirection(DEFAULT_DIRECTION);
 				
-				// 2-4 butons
+				// 2-4 buttons
 				return lastPressed;
 			}
 			

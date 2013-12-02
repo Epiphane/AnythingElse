@@ -22,5 +22,16 @@ public class Point {
 		x += adder.x;
 		y += adder.y;
 	}
+	
+	/** This fixes a nasty bug. */
+	public boolean equals(Object other) {
+		// != if null or not a point
+		if(other == null) return false;
+		if(!(other instanceof Point)) return false;
+		
+		// Compare their x and y values!
+		Point otherp = (Point) other;
+		return otherp.x == x && otherp.y == y;
+	}
 }
 

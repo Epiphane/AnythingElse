@@ -11,8 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Camera extends OrthographicCamera {
 	public static final float LEEWAY_X = 60;
-	public static final float MAX_SCROLL_SPEED_X = Player.WALKSPEED * TheGame.TILE_SIZE * TheGame.TILE_SCALE;
-	public static final float MAX_SCROLL_SPEED_Y = -Entity.MAX_FALL_SPEED * TheGame.TILE_SIZE * TheGame.TILE_SCALE;
+	public static final float MAX_SCROLL_SPEED_X = Player.WALK_SPEED * TheGame.TILE_SIZE * TheGame.TILE_SCALE * 10;
+	public static final float MAX_SCROLL_SPEED_Y = -Entity.MAX_FALL_SPEED * TheGame.TILE_SIZE * TheGame.TILE_SCALE * 10;
 	
 	private boolean rushing = false;
 	
