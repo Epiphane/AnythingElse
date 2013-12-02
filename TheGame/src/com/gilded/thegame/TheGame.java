@@ -18,7 +18,7 @@ public class TheGame implements ApplicationListener {
 	private float accumulatedTime = 0;
 	
 	/** Is the program running? (or paused?) */
-	private boolean running = false;
+	private boolean isRunning = false;
 	
 	/**
 	 * Keeps track of all inputs
@@ -32,7 +32,7 @@ public class TheGame implements ApplicationListener {
 		gameState.init(this);
 		Gdx.input.setInputProcessor(input);
 		
-		running = true;
+		isRunning = true;
 	}
 
 	@Override
