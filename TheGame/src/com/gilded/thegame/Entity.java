@@ -11,7 +11,7 @@ public class Entity extends Sprite {
 	protected Level currentLevel;
 
 	/** Am I on the ground? */
-	protected boolean onGround = false;
+	protected boolean onGround = false, againstLWall = false, againstRWall = false;
 
 	/** Current Location (top left) */
 	protected float x;
@@ -59,9 +59,13 @@ public class Entity extends Sprite {
 	 * @param dy
 	 */
 	public void tryMove(float dx, float dy) {
+		if(Math.abs(dx) < 0.01) dx = 0;
+		
 		float w = getWidth();
 		float h = getHeight();
 		onGround = false;
+		againstRWall = false;
+		againstLWall = false;
 		
 		// First, try to move horizontally
 		if (currentLevel.canMove(this, x + dx, y, w, h)) {
@@ -76,6 +80,13 @@ public class Entity extends Sprite {
 			else {
 				// Hit a wall
 				hitWall(dx, dy);
+				if(dx != 0 && dy < 0)
+					this.dy = 0;
+				
+				if (dx > 0)
+					againstRWall = true;
+				else if (dx < 0)
+					againstLWall = true;
 			}
 		}
 
@@ -83,8 +94,9 @@ public class Entity extends Sprite {
 		if (currentLevel.canMove(this, x, y + dy, w, h)) {
 			y += dy;
 		} else {
-			if (dy > 0)
+			if (dy < 0) {
 				onGround = true;
+			}
 			// Hit the wall
 			hitWall(dx, dy);
 		}
@@ -106,9 +118,6 @@ public class Entity extends Sprite {
 			x -= dx * 0.01;
 			y -= dy * 0.01;
 		}
-
-		if (dy != 0)
-			onGround = true;
 	}
 
 	public Level getCurrentLevel() {

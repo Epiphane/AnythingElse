@@ -33,7 +33,7 @@ public class Level {
 	 */
 	public Level(String mapName, Player mainCharacter) {
 		camera = new Camera(TheGame.GAME_WIDTH, TheGame.GAME_HEIGHT);
-		camera.setToOrtho(false, TheGame.GAME_WIDTH / (TheGame.TILE_SIZE * TheGame.TILE_SCALE), TheGame.GAME_HEIGHT / (TheGame.TILE_SIZE * TheGame.TILE_SCALE));
+		camera.setToOrtho(false, TheGame.GAME_WIDTH / (TheGame.TILE_SIZE * TheGame.DISPLAY_TILE_SCALE), TheGame.GAME_HEIGHT / (TheGame.TILE_SIZE * TheGame.DISPLAY_TILE_SCALE));
 		camera.update(width, height);
 		
 		map = new TmxMapLoader().load("maps/"+mapName);

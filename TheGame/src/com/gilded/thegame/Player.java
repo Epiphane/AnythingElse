@@ -1,12 +1,15 @@
 package com.gilded.thegame;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Player extends Entity {
 	public static final int BASIC = 0;
+	public static final int DASHER = 1;
+	public static final int PRANCER = 2;
+	public static final int FLACCID = 3;
 	
-	public static final float JUMP_DY = 0.3f;
-	public static final float WALK_SPEED = TheGame.TILE_SCALE / 24f;
+	public static final float JUMP_DY = 0.4f;
+	public static final float JUMP_DX_OFF_WALL = 0.25f;
+	public static final float WALK_SPEED = TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS / 24f;
 	public static final float WALK_FRICTION = 0.93f;
 
 	private int frame;
@@ -15,13 +18,18 @@ public class Player extends Entity {
 	
 	private int state = BASIC;
 	
+	/* For allllll the animations */
+	public int ticksRemaining;
+	
 	/* Dashing through the snow... */
 	private boolean dashing = false;
 	public static final float DASHSPEED = 0.6f;
 	public static final int DASH_TICKS = 10;
 	public static final float DASH_FRICTION = 0.8f;
-	public int dashTicksRemaining;
 	public int dashDirection;
+	
+	/* For the glorious wall cling and jump */
+	public static final int CLING_TO_WALL_TICKS = 7;
 	
 	/* Glide stuffz */
 	private boolean isGliding = false;
@@ -40,10 +48,15 @@ public class Player extends Entity {
 	public void tick(Input input)
 	{
 		super.tick();
+		
 	
 		// Jump
-		if(input.buttonStack.shouldJump() && onGround) {
+		if(input.buttonStack.shouldJump() && (onGround || againstLWall || againstRWall)) {
 			dy = JUMP_DY;
+			if(!onGround) { // Just hangin' on..
+				if(againstRWall) dx = -JUMP_DX_OFF_WALL;
+				else if(againstLWall) dx = JUMP_DX_OFF_WALL;
+			}
 		}
 		
 		// Daaash!
@@ -54,7 +67,7 @@ public class Player extends Entity {
 			dashDirection = Utility.directionFromOffset(dir);
 			
 			dashing = true;
-			dashTicksRemaining = DASH_TICKS;
+			ticksRemaining = DASH_TICKS;
 			dx = DASHSPEED * dir.x;
 			dy = DASHSPEED * dir.y;
 
@@ -91,12 +104,15 @@ public class Player extends Entity {
 			}
 		}
 
+		System.out.print("dx,dy: "+dx+", "+dy+"    ");
 		tryMove(dx, dy);
+		System.out.print(againstLWall + " - ");
+		System.out.println(onGround + " when " + dy + " is dy");
 		
 		// Iterate dashingness
 		if(dashing) {
-			dashTicksRemaining--;
-			if(dashTicksRemaining == 0) {
+			ticksRemaining--;
+			if(ticksRemaining == 0) {
 				dashing = false;
 				// Slow doooown
 				dy *= DASH_FRICTION;
@@ -121,8 +137,12 @@ public class Player extends Entity {
 		
 		if(dashing) {
 			// Draw dashing character
-			this.setRegion(Art.dashCharacter[10 - dashTicksRemaining][0]);
+			this.setRegion(Art.dashCharacter[DASH_TICKS - ticksRemaining][0]);
 			this.setRotation(Utility.dirToDegree(dashDirection));
+		}
+		else if(againstLWall) {
+			// Draw character against wall
+			this.setRegion(Art.mainCharacter[CLING_TO_WALL_TICKS - ticksRemaining][1]);
 		} else {
 			// Draw walking character
 			this.setRegion(Art.mainCharacter[frame/3][0]);
@@ -133,6 +153,10 @@ public class Player extends Entity {
 				currentLevel.placeCharacter();
 			}
 		}
+	}
+	
+	private void startAnimation(int animation) {
+		
 	}
 	
 	private void glide()

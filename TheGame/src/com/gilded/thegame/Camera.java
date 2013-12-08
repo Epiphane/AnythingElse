@@ -11,8 +11,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  */
 public class Camera extends OrthographicCamera {
 	public static final float LEEWAY_X = 60;
-	public static final float MAX_SCROLL_SPEED_X = Player.WALK_SPEED * TheGame.TILE_SIZE * TheGame.TILE_SCALE * 10;
-	public static final float MAX_SCROLL_SPEED_Y = -Entity.MAX_FALL_SPEED * TheGame.TILE_SIZE * TheGame.TILE_SCALE * 10;
+	public static final float MAX_SCROLL_SPEED_X = Player.WALK_SPEED * TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS * 10;
+	public static final float MAX_SCROLL_SPEED_Y = -Entity.MAX_FALL_SPEED * TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS * 10;
 	
 	private boolean rushing = false;
 	
@@ -35,7 +35,7 @@ public class Camera extends OrthographicCamera {
 	
 	public void update(int levelWidth, int levelHeight) {
 		if(focus != null) {
-			dx = focus.getX() * TheGame.TILE_SIZE * TheGame.TILE_SCALE - x;
+			dx = focus.getX() * TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS - x;
 			
 			// Account for leeway. Essentially, don't move if the player is just in
 			// the middle area-ish
@@ -47,7 +47,7 @@ public class Camera extends OrthographicCamera {
 				dx += LEEWAY_X;
 				if(dx > 0) dx = 0;
 			}
-			dy = focus.getY() * TheGame.TILE_SIZE * TheGame.TILE_SCALE - y;
+			dy = focus.getY() * TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS - y;
 			float scalefx = 0.050f;
 			float scalefy = 0.125f;
 
@@ -73,12 +73,12 @@ public class Camera extends OrthographicCamera {
 		
 		// Check for out of bounds
 		if(x - TheGame.GAME_WIDTH / 2 < 0) x = TheGame.GAME_WIDTH / 2;
-		if((x + TheGame.GAME_WIDTH / 2) / (TheGame.TILE_SIZE * TheGame.TILE_SCALE) > levelWidth) x = (int) (levelWidth * TheGame.TILE_SCALE * TheGame.TILE_SIZE) - TheGame.GAME_WIDTH / 2;
+		if((x + TheGame.GAME_WIDTH / 2) / (TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS) > levelWidth) x = (int) (levelWidth * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS * TheGame.TILE_SIZE) - TheGame.GAME_WIDTH / 2;
 		if(y - TheGame.GAME_HEIGHT / 2 < 0) y = TheGame.GAME_HEIGHT / 2;
-		if((y + TheGame.GAME_HEIGHT / 2) / (TheGame.TILE_SIZE * TheGame.TILE_SCALE) > levelHeight) y = (int) (levelHeight * TheGame.TILE_SCALE * TheGame.TILE_SIZE) - TheGame.GAME_HEIGHT / 2;
+		if((y + TheGame.GAME_HEIGHT / 2) / (TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS) > levelHeight) y = (int) (levelHeight * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS * TheGame.TILE_SIZE) - TheGame.GAME_HEIGHT / 2;
 		
-		position.x = x / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
-		position.y = y / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
+		position.x = x / (TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS);
+		position.y = y / (TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS);
 
 		super.update();
 	}
@@ -94,10 +94,10 @@ public class Camera extends OrthographicCamera {
 	public void setFocus(Sprite focus, boolean cut) {
 		this.focus = focus;
 		if(cut) {
-			this.x = (int) (focus.getX() * TheGame.TILE_SIZE * TheGame.TILE_SCALE);
-			this.y = (int) (focus.getY() * TheGame.TILE_SIZE * TheGame.TILE_SCALE);
-			position.x = x / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
-			position.y = y / (TheGame.TILE_SIZE * TheGame.TILE_SCALE);
+			this.x = (int) (focus.getX() * TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS);
+			this.y = (int) (focus.getY() * TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS);
+			position.x = x / (TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS);
+			position.y = y / (TheGame.TILE_SIZE * TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS);
 
 			rushing = false;
 		}
