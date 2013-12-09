@@ -104,10 +104,10 @@ public class Player extends Entity {
 			}
 		}
 
-		System.out.print("dx,dy: "+dx+", "+dy+"    ");
+//		System.out.print("dx,dy: "+dx+", "+dy+"    ");
 		tryMove(dx, dy);
-		System.out.print(againstLWall + " - ");
-		System.out.println(onGround + " when " + dy + " is dy");
+//		System.out.print(againstLWall + " - ");
+//		System.out.println(onGround + " when " + dy + " is dy");
 		
 		// Iterate dashingness
 		if(dashing) {
