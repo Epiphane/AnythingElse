@@ -216,6 +216,8 @@ public class Input implements InputProcessor {
 			Gdx.app.exit();
 		}
 		
+		Gdx.app.debug("butt", "key down!!!");
+		
 		set(keycode, true);
 		return false;
 	}
