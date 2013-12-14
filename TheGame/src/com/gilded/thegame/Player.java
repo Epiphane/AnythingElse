@@ -21,6 +21,9 @@ public class Player extends Entity {
 	/* For allllll the animations */
 	public int ticksRemaining;
 	
+	/* During dashes or stone mode we want to ignore input but still keep it in the stack. */
+	public boolean ignoreInput = false;
+	
 	/* Dashing through the snow... */
 	private boolean dashing = false;
 	public static final float DASHSPEED = 0.6f;
@@ -28,13 +31,16 @@ public class Player extends Entity {
 	public static final float DASH_FRICTION = 0.8f;
 	public int dashDirection;
 	
+	/* Stomp it, stomp it good */
+	private boolean stomping = false;
+	public static final float STOMPSPEED = 0.8f;
+	
 	/* For the glorious wall cling and jump */
 	public static final int CLING_TO_WALL_TICKS = 7;
 	
 	/* Glide stuffz */
 	private boolean isGliding = false;
 	public static final float glideFallSlowFactor = 0.5f;
-	
 	
 	public Player(int x, int y) {
 		super(x, y, Art.mainCharacter[0][0]);
@@ -61,12 +67,13 @@ public class Player extends Entity {
 		
 		// Daaash!
 		//TODO: Change to a switch/case based on what form the player is in
-		if(input.buttonStack.shouldDash() && !dashing) {
+		if(input.buttonStack.shouldDash() && !ignoreInput) {
 			// Initiate dash based on what directions the player is holding
 			Point dir = input.buttonStack.airDirection();
 			dashDirection = Utility.directionFromOffset(dir);
 			
 			dashing = true;
+			ignoreInput = true;
 			ticksRemaining = DASH_TICKS;
 			dx = DASHSPEED * dir.x;
 			dy = DASHSPEED * dir.y;
@@ -78,6 +85,25 @@ public class Player extends Entity {
 			}
 		}
 		
+		// Stommmp!
+		//TODO: Implement switch/case based on what form the character is in
+		if(input.buttonStack.isStomping()) {
+			// Not stomping -> stomping
+			if(!stomping && !ignoreInput) {
+				stomping = true;
+				ignoreInput = true;
+			
+				dx = 0;
+				dy = -STOMPSPEED;
+			}
+		} else {
+			// Stomping -> not stomping
+			if(stomping && ignoreInput) {
+				stomping = false;
+				ignoreInput = false;
+			}
+		}
+		
 		// Handle gravity
 		if (!onGround && !dashing) {
 			if (dy > MAX_FALL_SPEED)
@@ -85,7 +111,7 @@ public class Player extends Entity {
 		}
 		
 		// First, set direction we plan to move and do actions
-		if(!dashing) {
+		if(!ignoreInput) {
 			if(input.buttonStack.walkDirection() == -1 && dx > -WALK_SPEED) {
 				dx -= WALK_SPEED / 10f;
 				walking = true;
@@ -117,6 +143,8 @@ public class Player extends Entity {
 				// Slow doooown
 				dy *= DASH_FRICTION;
 				dx *= DASH_FRICTION;
+				
+				ignoreInput = false;
 			}
 		}
 		

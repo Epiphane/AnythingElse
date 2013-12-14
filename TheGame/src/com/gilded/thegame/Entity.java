@@ -72,7 +72,7 @@ public class Entity extends Sprite {
 			x += dx;
 		} else {
 			// Slope?
-			if (currentLevel.canMove(this, x + dx, y + dx + 0.5f, w, h)) {
+			if (currentLevel.canMove(this, x + dx, y + dy + 0.5f, w, h)) {
 				x += dx;
 				y += Math.abs(dx);
 			}

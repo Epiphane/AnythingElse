@@ -70,6 +70,15 @@ public class Input implements InputProcessor {
 			}
 			return false;
 		}
+		 
+		/** @return True if the user is currently holding down the "stomp" action */
+		public boolean isStomping() {
+			Node stompNode = find(STOMP);
+			if(stompNode != null) {
+				return true;
+			}
+			return false;
+		}
 		
 		/** Returns the node containing "button," or null if it's not there */
 		private Node find(int button) {
@@ -149,6 +158,8 @@ public class Input implements InputProcessor {
 	public static final int RUN = 9;
 	public static final int DASH = 10;
 	public static final int GLIDE = 11;
+	public static final int STOMP = 12;
+	
 	
     /** Defines the direction to perform an action if the user has nothing held down. */
 	public final static int DEFAULT_DIRECTION = UP;
@@ -183,6 +194,7 @@ public class Input implements InputProcessor {
 		if (key == Keys.SPACE)      button = DASH;
 		if (key == Keys.Z) 			button = ACTION;
 		if (key == Keys.S)          button = GLIDE;
+		if (key == Keys.SHIFT_LEFT) button = STOMP;
 		
 		// If it's recognized, set the state in the array
 		if(button >= 0) {

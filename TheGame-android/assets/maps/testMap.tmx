@@ -18,10 +18,10 @@
    <polygon points="64,0 256,0 272,-16 304,-16 320,-32 592,-32 592,16 -33,16 -32,-112 16,-112 16,-16 48,-16"/>
   </object>
   <object x="193" y="400">
-   <polygon points="0,0 47,0 46,-368 -2,-368"/>
+   <polygon points="-1,0 47,0 47,-368 -1,-368"/>
   </object>
   <object x="81" y="303">
-   <polygon points="0,0 48,0 47,-191 -1,-190"/>
+   <polygon points="-1,1 47,1 47,-191 -1,-191"/>
   </object>
  </objectgroup>
  <objectgroup name="Object Layer 2" width="52" height="40">
