@@ -33,7 +33,9 @@ public class Player extends Entity {
 	
 	/* Stomp it, stomp it good */
 	private boolean stomping = false;
+	private boolean preparingStomp = false;
 	public static final float STOMPSPEED = 0.8f;
+	public static final int STOMP_DELAY = 15;
 	
 	/* For the glorious wall cling and jump */
 	public static final int CLING_TO_WALL_TICKS = 7;
@@ -93,16 +95,31 @@ public class Player extends Entity {
 				stomping = true;
 				ignoreInput = true;
 			
+				dashing = false;
+				
+				ticksRemaining = STOMP_DELAY;
+				preparingStomp = true;
+				dx = 0;
+				dy = 0;
+			} else if(ticksRemaining == 0) {
+				preparingStomp = false;
+				stomping = true;
 				dx = 0;
 				dy = -STOMPSPEED;
+			} else {
+				ticksRemaining--;
+				dy = 0;
+				dx = 0;
 			}
+				
 		} else {
 			// Stomping -> not stomping
-			if(stomping && ignoreInput) {
+			if(stomping) {
 				stomping = false;
 				ignoreInput = false;
 			}
 		}
+
 		
 		// Handle gravity
 		if (!onGround && !dashing) {
@@ -148,8 +165,7 @@ public class Player extends Entity {
 			}
 		}
 		
-		if(input.buttonStack.peek() == Input.GLIDE && !onGround)
-		{
+		if(input.buttonStack.peek() == Input.GLIDE && !onGround) {
 		    glide();
 		}
 		
