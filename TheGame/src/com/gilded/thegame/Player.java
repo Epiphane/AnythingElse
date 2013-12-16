@@ -106,7 +106,7 @@ public class Player extends Entity {
 				stomping = true;
 				dx = 0;
 				dy = -STOMPSPEED;
-			} else {
+			} else if(preparingStomp) {
 				ticksRemaining--;
 				dy = 0;
 				dx = 0;

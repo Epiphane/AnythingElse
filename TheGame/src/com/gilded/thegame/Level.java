@@ -1,9 +1,12 @@
 package com.gilded.thegame;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -58,6 +61,11 @@ public class Level {
 		camera.setFocus(this.mainCharacter, true);
 		camera.update(width, height);
 		
+		MapProperties mp = map.getProperties();
+		Iterator<String> stringit = mp.getKeys();
+		
+		MapObjects mo = map.getLayers().get(2).getObjects();
+		
 		polygonCollisions = new ArrayList<Polygon>();
 		for(MapObject object : map.getLayers().get(2).getObjects()) {
 			if(object instanceof PolygonMapObject) {
@@ -96,8 +104,9 @@ public class Level {
 		float x1 = (xc + w) * TheGame.TILE_SIZE;
 		float y1 = (yc + h) * TheGame.TILE_SIZE;
 		
-		for(Polygon object : polygonCollisions) {
-			if(object.contains(x0, y0) || object.contains(x0, y1) || object.contains(x1, y0) || object.contains(x1, y1)) {
+		for(Polygon polyToCheck : polygonCollisions) {
+			// Check if our 4 corners intersect with any platform polygons
+			if(polyToCheck.contains(x0, y0) || polyToCheck.contains(x0, y1) || polyToCheck.contains(x1, y0) || polyToCheck.contains(x1, y1)) {
 				return false;
 			}
 		}

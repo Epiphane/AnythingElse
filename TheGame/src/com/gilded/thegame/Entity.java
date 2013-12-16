@@ -45,7 +45,7 @@ public class Entity extends Sprite {
 
 	/**
 	 * Update me! This function is where we will have all computations such as
-	 * AI, wanking off, and the like.
+	 * AI, walking off, and the like.
 	 */
 	public void tick() {
 		if (currentLevel == null) // Do nothing if we're not in a world
@@ -132,5 +132,13 @@ public class Entity extends Sprite {
 		super.setPosition(x, y);
 		this.x = x;
 		this.y = y;
+	}
+	
+	/**
+	 * 
+	 * @param direction
+	 */
+	public void checkDirection(int direction) {
+		
 	}
 }
