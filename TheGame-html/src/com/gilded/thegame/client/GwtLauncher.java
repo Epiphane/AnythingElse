@@ -1,6 +1,6 @@
-package com.gilded.thegame.client;
+package com.gilded.TheGame.client;
 
-import com.gilded.thegame.TheGame;
+import com.gilded.TheGame.TheGame;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 public class GwtLauncher extends GwtApplication {
 	@Override
 	public GwtApplicationConfiguration getConfig () {
-		GwtApplicationConfiguration cfg = new GwtApplicationConfiguration(960, 640);
+		GwtApplicationConfiguration cfg = new GwtApplicationConfiguration(480, 320);
 		return cfg;
 	}
 

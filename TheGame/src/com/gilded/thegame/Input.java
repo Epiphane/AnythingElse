@@ -9,7 +9,7 @@ public class Input implements InputProcessor {
 		private class Node {
 			int button;
 			Node next;
-			/** This is a weird one.  We DON'T want to jump multiple times from one
+			/** We DON'T want to jump multiple times from one
 			 * "up" press, but we still want to be able to use the "up" press when
 			 * we are figuring out the direction to use an ability. So, this prevents
 			 * a jump from being used multiple times but keeps it in the stack!*/
@@ -227,8 +227,6 @@ public class Input implements InputProcessor {
 		if(keycode == Keys.ESCAPE) {
 			Gdx.app.exit();
 		}
-		
-		Gdx.app.debug("butt", "key down!!!");
 		
 		set(keycode, true);
 		return false;

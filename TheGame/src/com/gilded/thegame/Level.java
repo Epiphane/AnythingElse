@@ -97,7 +97,7 @@ public class Level {
 		map.dispose();
 	}
 
-	public boolean canMove(Entity entity, float xc, float yc, float w, float h) {
+	public boolean canMove(float xc, float yc, float w, float h) {
 		
 		float x0 = (xc) * TheGame.TILE_SIZE;
 		float y0 = (yc) * TheGame.TILE_SIZE;
@@ -113,6 +113,22 @@ public class Level {
 		
 		return true;
 	}
+	
+	/**
+	 * See if there is a wall touching the target Entity in the specified direction.
+	 * @param target The Entity we need to see
+	 * @param direction The direction (Up is 0, clockwise ascends) that we want to check
+	 * @return Whether or not there is a wall at the specified location.
+	 */
+	public boolean checkFoot(Entity target, int direction) {
+		Point offset = Utility.offsetFromDirection(direction);
+		float centerX = target.getX() + target.getWidth()/2;
+		for(Polygon walls : polygonCollisions) {
+			
+		}
+		return false;
+	}
+	
 	
 	public void placeCharacter() {
 		MapObject spawn = map.getLayers().get(3).getObjects().get("Spawn");

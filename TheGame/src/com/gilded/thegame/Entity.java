@@ -68,11 +68,11 @@ public class Entity extends Sprite {
 		againstLWall = false;
 		
 		// First, try to move horizontally
-		if (currentLevel.canMove(this, x + dx, y, w, h)) {
+		if (currentLevel.canMove(x + dx, y, w, h)) {
 			x += dx;
 		} else {
 			// Slope?
-			if (currentLevel.canMove(this, x + dx, y + dy + 0.5f, w, h)) {
+			if (currentLevel.canMove(x + dx, y + dy + 0.5f, w, h)) {
 				x += dx;
 				y += Math.abs(dx);
 			}
@@ -82,21 +82,13 @@ public class Entity extends Sprite {
 				hitWall(dx, dy);
 				if(dx != 0 && dy < 0)
 					this.dy = 0;
-				
-				if (dx > 0)
-					againstRWall = true;
-				else if (dx < 0)
-					againstLWall = true;
 			}
 		}
 
 		// Next, move vertically
-		if (currentLevel.canMove(this, x, y + dy, w, h)) {
+		if (currentLevel.canMove(x, y + dy, w, h)) {
 			y += dy;
 		} else {
-			if (dy < 0) {
-				onGround = true;
-			}
 			// Hit the wall
 			hitWall(dx, dy);
 		}
@@ -114,10 +106,13 @@ public class Entity extends Sprite {
 		x += dx;
 		y += dy;
 		
-		while(!currentLevel.canMove(this, x, y, getWidth(), getHeight())) {
+		while(!currentLevel.canMove(x, y, getWidth(), getHeight())) {
 			x -= dx * 0.01;
 			y -= dy * 0.01;
 		}
+		
+		// Now we figure out which part of you is hitting a surface
+		//onGround = checkFoot()
 	}
 
 	public Level getCurrentLevel() {

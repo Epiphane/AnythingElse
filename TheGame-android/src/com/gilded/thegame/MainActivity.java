@@ -1,4 +1,4 @@
-package com.gilded.thegame;
+package com.gilded.TheGame;
 
 import android.os.Bundle;
 
