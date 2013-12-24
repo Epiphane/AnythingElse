@@ -59,7 +59,9 @@ public class Player extends Entity {
 		
 	
 		// Jump
-		if(input.buttonStack.shouldJump() && (onGround || againstLWall || againstRWall)) {
+		if(input.buttonStack.shouldJump() ) {// && (onGround || againstLWall || againstRWall)) {
+			checkDirection(4);
+			
 			dy = JUMP_DY;
 			if(!onGround) { // Just hangin' on..
 				if(againstRWall) dx = -JUMP_DX_OFF_WALL;

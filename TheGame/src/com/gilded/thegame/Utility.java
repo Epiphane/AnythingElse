@@ -1,5 +1,7 @@
 package com.gilded.thegame;
 
+import com.badlogic.gdx.math.Rectangle;
+
 public class Utility {
 	/**
 	 * Converts from a point-offset to a direction integer
@@ -76,5 +78,38 @@ public class Utility {
 	
 	public static int sign(int x) {
 		return sign((double) x);
+	}
+	
+	/**
+	 * Returns the coordinates of the given rectangle's corner.  Corner numbers:
+	 * 
+	 * 0    1
+	 * 
+	 * 3    2
+	 * 
+	 * @param rect The rectangle we want a corner of
+	 * @param corner The number, 0-4, of the corner we want
+	 * @return A Point describing the corner we asked for
+	 */
+	public static PointD getCorner(Rectangle rect, int corner) {
+		PointD result = new PointD(0, 0);
+		switch(corner) {
+		case 0:
+			result = new PointD(rect.x - rect.width/2, rect.y - rect.height/2);
+			break;
+		case 1:
+			result = new PointD(rect.x + rect.width/2, rect.y - rect.height/2);
+			break;
+		case 2:
+			result = new PointD(rect.x + rect.width/2, rect.y + rect.height/2);
+			break;
+		case 3:
+			result = new PointD(rect.x - rect.width/2, rect.y + rect.height/2);
+			break;
+		default:
+			System.out.println("Something screwed up! Tried to get corner #" + corner);
+		}
+		
+		return result;
 	}
 }

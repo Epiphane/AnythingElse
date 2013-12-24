@@ -122,9 +122,31 @@ public class Level {
 	 */
 	public boolean checkFoot(Entity target, int direction) {
 		Point offset = Utility.offsetFromDirection(direction);
+		PointD offsetD = new PointD(offset.x, offset.y);
+		offsetD.x *= 0.01;
+		offsetD.y *= 0.01;
+		
 		float centerX = target.getX() + target.getWidth()/2;
+		float centerY = target.getY() + target.getHeight()/2;
+
+		// Grab the location of the corners we want to check
+		int cornerCW = direction/2;
+		int cornerCCW = direction/2 - 1;
+		if(cornerCCW == -1) cornerCCW = 3;
+		
+		PointD pointCW = Utility.getCorner(target.getBoundingRectangle(), cornerCW);
+		PointD pointCCW = Utility.getCorner(target.getBoundingRectangle(), cornerCCW);
+		
+		pointCW.addPoint(new PointD(centerX, centerY));
+		pointCCW.addPoint(new PointD(centerX, centerY));
+		
+		pointCW.addPoint(offsetD);
+		pointCCW.addPoint(offsetD);
+		
 		for(Polygon walls : polygonCollisions) {
-			
+			if(walls.contains((float) pointCW.x, (float) pointCW.y) || walls.contains((float) pointCCW.x, (float) pointCCW.y)) {
+				return true;
+			}
 		}
 		return false;
 	}

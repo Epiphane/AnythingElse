@@ -191,8 +191,8 @@ public class Input implements InputProcessor {
 		if (key == Keys.DPAD_DOWN)  button = DOWN;
 		if (key == Keys.DPAD_LEFT)  button = LEFT;
 		if (key == Keys.DPAD_RIGHT) button = RIGHT;
-		if (key == Keys.SPACE)      button = DASH;
-		if (key == Keys.Z) 			button = ACTION;
+		if (key == Keys.Z)          button = DASH;
+		//if (key == Keys.Z) 			button = ACTION;
 		if (key == Keys.S)          button = GLIDE;
 		if (key == Keys.SHIFT_LEFT) button = STOMP;
 		

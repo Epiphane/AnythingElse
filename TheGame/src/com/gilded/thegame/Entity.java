@@ -2,11 +2,12 @@ package com.gilded.thegame;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Entity extends Sprite {
 	public static final float MAX_FALL_SPEED = -0.5f;
 	public static final float GRAVITY = -0.020f;
-	
+
 	/** What level am I in? */
 	protected Level currentLevel;
 
@@ -60,13 +61,13 @@ public class Entity extends Sprite {
 	 */
 	public void tryMove(float dx, float dy) {
 		if(Math.abs(dx) < 0.01) dx = 0;
-		
+
 		float w = getWidth();
 		float h = getHeight();
 		onGround = false;
 		againstRWall = false;
 		againstLWall = false;
-		
+
 		// First, try to move horizontally
 		if (currentLevel.canMove(x + dx, y, w, h)) {
 			x += dx;
@@ -105,12 +106,12 @@ public class Entity extends Sprite {
 	public void hitWall(float dx, float dy) {
 		x += dx;
 		y += dy;
-		
+
 		while(!currentLevel.canMove(x, y, getWidth(), getHeight())) {
 			x -= dx * 0.01;
 			y -= dy * 0.01;
 		}
-		
+
 		// Now we figure out which part of you is hitting a surface
 		//onGround = checkFoot()
 	}
@@ -128,12 +129,16 @@ public class Entity extends Sprite {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
 	 * 
 	 * @param direction
 	 */
 	public void checkDirection(int direction) {
-		
+		if(currentLevel.checkFoot(this, direction)) {
+			System.out.println("There IS a wall there.");
+		} else {
+			System.out.println("There is NOT a wall there.");
+		}
 	}
 }
