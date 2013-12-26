@@ -61,9 +61,9 @@ public class Level {
 		camera.setFocus(this.mainCharacter, true);
 		camera.update(width, height);
 		
+		/** TODO: REMOVE DEBUG CODE */
 		MapProperties mp = map.getProperties();
 		Iterator<String> stringit = mp.getKeys();
-		
 		MapObjects mo = map.getLayers().get(2).getObjects();
 		
 		polygonCollisions = new ArrayList<Polygon>();
@@ -106,6 +106,18 @@ public class Level {
 		
 		for(Polygon polyToCheck : polygonCollisions) {
 			// Check if our 4 corners intersect with any platform polygons
+			/*if(polyToCheck.contains(x0, y0)) {
+				System.out.println("Intersected: " + x0 + ", " + y0);
+			}
+			if(polyToCheck.contains(x1, y0)) {
+				System.out.println("Intersected: " + x1 + ", " + y0);
+			}
+			if(polyToCheck.contains(x0, y1)) {
+				System.out.println("Intersected: " + x0 + ", " + y1);
+			}
+			if(polyToCheck.contains(x1, y1)) {
+				System.out.println("Intersected: " + x1 + ", " + y1);
+			}*/
 			if(polyToCheck.contains(x0, y0) || polyToCheck.contains(x0, y1) || polyToCheck.contains(x1, y0) || polyToCheck.contains(x1, y1)) {
 				return false;
 			}
@@ -121,13 +133,13 @@ public class Level {
 	 * @return Whether or not there is a wall at the specified location.
 	 */
 	public boolean checkFoot(Entity target, int direction) {
-		Point offset = Utility.offsetFromDirection(direction);
+		/*Point offset = Utility.offsetFromDirection(direction);
 		PointD offsetD = new PointD(offset.x, offset.y);
 		offsetD.x *= 0.01;
 		offsetD.y *= 0.01;
 		
-		float centerX = target.getX() + target.getWidth()/2;
-		float centerY = target.getY() + target.getHeight()/2;
+		float centerX = (target.getX() + target.getWidth()/2) * TheGame.TILE_SIZE;
+		float centerY = (target.getY() + target.getHeight()/2) * TheGame.TILE_SIZE;
 
 		// Grab the location of the corners we want to check
 		int cornerCW = direction/2;
@@ -136,12 +148,29 @@ public class Level {
 		
 		PointD pointCW = Utility.getCorner(target.getBoundingRectangle(), cornerCW);
 		PointD pointCCW = Utility.getCorner(target.getBoundingRectangle(), cornerCCW);
+		pointCW.mult(TheGame.TILE_SIZE);
+		pointCCW.mult(TheGame.TILE_SIZE);
+		//System.out.println("Center: " + centerX + ", " + centerY);
+		//System.out.println("Clockwise pt: " + pointCW.x + ", " + pointCW.y);
+		//System.out.println("Counterclockwise pt: " + pointCCW.x + ", " + pointCCW.y);
 		
-		pointCW.addPoint(new PointD(centerX, centerY));
-		pointCCW.addPoint(new PointD(centerX, centerY));
+		pointCW.addPoint(centerX, centerY);
+		pointCCW.addPoint(centerX, centerY);
 		
 		pointCW.addPoint(offsetD);
-		pointCCW.addPoint(offsetD);
+		pointCCW.addPoint(offsetD);*/
+		
+		PointD pointCW = new PointD(target.x, target.y - target.getHeight());
+		PointD pointCCW = new PointD(target.x + target.getWidth(), target.y - target.getHeight());
+		pointCW.mult(TheGame.TILE_SIZE);
+		pointCCW.mult(TheGame.TILE_SIZE);
+		
+		pointCW.addPoint(0, 0.1);
+		pointCCW.addPoint(0, 0.1);
+
+//		System.out.println("Center: " + centerX + ", " + centerY);
+		System.out.println("Clockwise pt: " + pointCW.x + ", " + pointCW.y);
+		System.out.println("Counterclockwise pt: " + pointCCW.x + ", " + pointCCW.y);
 		
 		for(Polygon walls : polygonCollisions) {
 			if(walls.contains((float) pointCW.x, (float) pointCW.y) || walls.contains((float) pointCCW.x, (float) pointCCW.y)) {

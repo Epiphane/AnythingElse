@@ -59,7 +59,7 @@ public class Player extends Entity {
 		
 	
 		// Jump
-		if(input.buttonStack.shouldJump() ) {// && (onGround || againstLWall || againstRWall)) {
+		if(input.buttonStack.shouldJump() ) {// && (onGround || againstLWall || againstRWall)) { TODO: no more of this plz
 			checkDirection(4);
 			
 			dy = JUMP_DY;
@@ -128,7 +128,6 @@ public class Player extends Entity {
 			if (dy > MAX_FALL_SPEED)
 				dy += GRAVITY;
 		}
-		
 		// First, set direction we plan to move and do actions
 		if(!ignoreInput) {
 			if(input.buttonStack.walkDirection() == -1 && dx > -WALK_SPEED) {

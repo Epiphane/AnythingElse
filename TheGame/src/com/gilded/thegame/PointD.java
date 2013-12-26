@@ -23,6 +23,17 @@ public class PointD {
 		y += adder.y;
 	}
 	
+	public void addPoint(double x, double y) {
+		this.x += x;
+		this.y += y;
+	}
+	
+	/** Multiply both x and y by Z */
+	public void mult(double z) {
+		x *= z;
+		y *= z;
+	}
+	
 	/** This fixes a nasty bug. */
 	public boolean equals(Object other) {
 		// != if null or not a point
