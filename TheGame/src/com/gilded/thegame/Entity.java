@@ -49,6 +49,8 @@ public class Entity extends Sprite {
 	 * AI, walking off, and the like.
 	 */
 	public void tick() {
+		onGround = checkDirection(Input.DOWN);
+		
 		if (currentLevel == null) // Do nothing if we're not in a world
 			return;
 	}
@@ -134,11 +136,11 @@ public class Entity extends Sprite {
 	 * 
 	 * @param direction
 	 */
-	public void checkDirection(int direction) {
+	public boolean checkDirection(int direction) {
 		if(currentLevel.checkFoot(this, direction)) {
-			System.out.println("There IS a wall there.");
+			return true;
 		} else {
-			System.out.println("There is NOT a wall there.");
+			return false;
 		}
 	}
 }

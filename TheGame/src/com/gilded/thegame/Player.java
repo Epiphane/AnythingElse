@@ -59,9 +59,7 @@ public class Player extends Entity {
 		
 	
 		// Jump
-		if(input.buttonStack.shouldJump() ) {// && (onGround || againstLWall || againstRWall)) { TODO: no more of this plz
-			checkDirection(4);
-			
+		if(input.buttonStack.shouldJump() && (onGround || againstLWall || againstRWall)) {
 			dy = JUMP_DY;
 			if(!onGround) { // Just hangin' on..
 				if(againstRWall) dx = -JUMP_DX_OFF_WALL;
@@ -121,7 +119,6 @@ public class Player extends Entity {
 				ignoreInput = false;
 			}
 		}
-
 		
 		// Handle gravity
 		if (!onGround && !dashing) {
