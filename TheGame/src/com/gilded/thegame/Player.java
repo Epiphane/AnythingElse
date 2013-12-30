@@ -185,6 +185,10 @@ public class Player extends Entity {
 		else if(againstLWall) {
 			// Draw character against wall
 			this.setRegion(Art.mainCharacter[CLING_TO_WALL_TICKS - ticksRemaining][1]);
+			this.setScale(1, 1);
+		} else if(againstRWall) {
+			this.setRegion(Art.mainCharacter[CLING_TO_WALL_TICKS - ticksRemaining][1]);
+			this.setScale(-1, 1);
 		} else {
 			// Draw walking character
 			this.setRegion(Art.mainCharacter[frame/3][0]);

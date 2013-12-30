@@ -50,6 +50,8 @@ public class Entity extends Sprite {
 	 */
 	public void tick() {
 		onGround = checkDirection(Input.DOWN);
+		againstRWall = checkDirection(Input.RIGHT);
+		againstLWall = checkDirection(Input.LEFT);
 		
 		if (currentLevel == null) // Do nothing if we're not in a world
 			return;
@@ -66,9 +68,9 @@ public class Entity extends Sprite {
 
 		float w = getWidth();
 		float h = getHeight();
-		onGround = false;
-		againstRWall = false;
-		againstLWall = false;
+//		onGround = false;
+//		againstRWall = false;
+//		againstLWall = false;
 
 		// First, try to move horizontally
 		if (currentLevel.canMove(x + dx, y, w, h)) {

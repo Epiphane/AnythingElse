@@ -95,16 +95,16 @@ public class Utility {
 		PointD result = new PointD(0, 0);
 		switch(corner) {
 		case 0:
-			result = new PointD(rect.x - rect.width/2, rect.y - rect.height/2);
+			result = new PointD(rect.x, rect.y + rect.height);
 			break;
 		case 1:
-			result = new PointD(rect.x + rect.width/2, rect.y - rect.height/2);
+			result = new PointD(rect.x + rect.width, rect.y + rect.height);
 			break;
 		case 2:
-			result = new PointD(rect.x + rect.width/2, rect.y + rect.height/2);
+			result = new PointD(rect.x + rect.width, rect.y);
 			break;
 		case 3:
-			result = new PointD(rect.x - rect.width/2, rect.y + rect.height/2);
+			result = new PointD(rect.x, rect.y);
 			break;
 		default:
 			System.out.println("Something screwed up! Tried to get corner #" + corner);

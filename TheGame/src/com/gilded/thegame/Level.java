@@ -133,13 +133,13 @@ public class Level {
 	 * @return Whether or not there is a wall at the specified location.
 	 */
 	public boolean checkFoot(Entity target, int direction) {
-		/*Point offset = Utility.offsetFromDirection(direction);
+		Point offset = Utility.offsetFromDirection(direction);
 		PointD offsetD = new PointD(offset.x, offset.y);
-		offsetD.x *= 0.01;
-		offsetD.y *= 0.01;
+		offsetD.x *= 0.1;
+		offsetD.y *= 0.1;
 		
-		float centerX = (target.getX() + target.getWidth()/2) * TheGame.TILE_SIZE;
-		float centerY = (target.getY() + target.getHeight()/2) * TheGame.TILE_SIZE;
+//		float centerX = (target.getX() + target.getWidth()/2) * TheGame.TILE_SIZE;
+//		float centerY = (target.getY() + target.getHeight()/2) * TheGame.TILE_SIZE;
 
 		// Grab the location of the corners we want to check
 		int cornerCW = direction/2;
@@ -150,31 +150,12 @@ public class Level {
 		PointD pointCCW = Utility.getCorner(target.getBoundingRectangle(), cornerCCW);
 		pointCW.mult(TheGame.TILE_SIZE);
 		pointCCW.mult(TheGame.TILE_SIZE);
-		//System.out.println("Center: " + centerX + ", " + centerY);
-		//System.out.println("Clockwise pt: " + pointCW.x + ", " + pointCW.y);
-		//System.out.println("Counterclockwise pt: " + pointCCW.x + ", " + pointCCW.y);
-		
-		pointCW.addPoint(centerX, centerY);
-		pointCCW.addPoint(centerX, centerY);
+//		System.out.println("Center: " + centerX + ", " + centerY);
+//		System.out.println("Clockwise pt: " + pointCW.x + ", " + pointCW.y);
+//		System.out.println("Counterclockwise pt: " + pointCCW.x + ", " + pointCCW.y);
 		
 		pointCW.addPoint(offsetD);
-		pointCCW.addPoint(offsetD);*/
-		
-		PointD pointCW = new PointD(target.x, target.y);
-		PointD pointCCW = new PointD(target.x + target.getWidth(), target.y);
-		double x = target.x;
-		double y = target.y;
-		double width = target.getWidth();
-		double height = target.getHeight();
-		pointCW.mult(TheGame.TILE_SIZE);
-		pointCCW.mult(TheGame.TILE_SIZE);
-		
-		pointCW.addPoint(0, -0.1);
-		pointCCW.addPoint(0, -0.1);
-
-//		System.out.println("Center: " + centerX + ", " + centerY);
-		//System.out.println("Clockwise pt: " + pointCW.x + ", " + pointCW.y);
-		//System.out.println("Counterclockwise pt: " + pointCCW.x + ", " + pointCCW.y);
+		pointCCW.addPoint(offsetD);
 		
 		for(Polygon walls : polygonCollisions) {
 			if(walls.contains((float) pointCW.x, (float) pointCW.y) || walls.contains((float) pointCCW.x, (float) pointCCW.y)) {

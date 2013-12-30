@@ -10,7 +10,7 @@ public class InGameState extends GameState {
 		camera = new OrthographicCamera(TheGame.GAME_WIDTH, TheGame.GAME_HEIGHT);
 		
 		mainCharacter = new Player(0, 0);
-		currentLevel = new Level("simple.tmx", mainCharacter);
+		currentLevel = new Level("testMap.tmx", mainCharacter);
 	}
 	
 	@Override
