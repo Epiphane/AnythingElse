@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Polygon;
 public class Level {
 	private Camera camera;
 	private TiledMap map;
-	private ArrayList<Polygon> polygonCollisions;
+	private ArrayList<MapObject> polygonCollisions;
 	private OrthogonalTiledMapRenderer renderer;
 	
 	/** 
@@ -66,10 +66,10 @@ public class Level {
 		Iterator<String> stringit = mp.getKeys();
 		MapObjects mo = map.getLayers().get(2).getObjects();
 		
-		polygonCollisions = new ArrayList<Polygon>();
+		polygonCollisions = new ArrayList<MapObject>();
 		for(MapObject object : map.getLayers().get(2).getObjects()) {
 			if(object instanceof PolygonMapObject) {
-				polygonCollisions.add(((PolygonMapObject)object).getPolygon());
+				polygonCollisions.add(object);
 			}
 		}
 	}
@@ -104,7 +104,7 @@ public class Level {
 		float x1 = (xc + w) * TheGame.TILE_SIZE;
 		float y1 = (yc + h) * TheGame.TILE_SIZE;
 		
-		for(Polygon polyToCheck : polygonCollisions) {
+		for(MapObject objectToCheck : polygonCollisions) {
 			// Check if our 4 corners intersect with any platform polygons
 			/*if(polyToCheck.contains(x0, y0)) {
 				System.out.println("Intersected: " + x0 + ", " + y0);
@@ -118,6 +118,7 @@ public class Level {
 			if(polyToCheck.contains(x1, y1)) {
 				System.out.println("Intersected: " + x1 + ", " + y1);
 			}*/
+			Polygon polyToCheck = ((PolygonMapObject) objectToCheck).getPolygon();
 			if(polyToCheck.contains(x0, y0) || polyToCheck.contains(x0, y1) || polyToCheck.contains(x1, y0) || polyToCheck.contains(x1, y1)) {
 				return false;
 			}
@@ -130,9 +131,9 @@ public class Level {
 	 * See if there is a wall touching the target Entity in the specified direction.
 	 * @param target The Entity we need to see
 	 * @param direction The direction (Up is 0, clockwise ascends) that we want to check
-	 * @return Whether or not there is a wall at the specified location.
+	 * @return The MapObject we're touching in that direction, or null if there is none.
 	 */
-	public boolean checkFoot(Entity target, int direction) {
+	public MapObject checkFoot(Entity target, int direction) {
 		Point offset = Utility.offsetFromDirection(direction);
 		PointD offsetD = new PointD(offset.x, offset.y);
 		offsetD.x *= 0.1;
@@ -142,9 +143,9 @@ public class Level {
 //		float centerY = (target.getY() + target.getHeight()/2) * TheGame.TILE_SIZE;
 
 		// Grab the location of the corners we want to check
-		int cornerCW = direction/2;
-		int cornerCCW = direction/2 - 1;
-		if(cornerCCW == -1) cornerCCW = 3;
+		int cornerCW = direction/2 + 1;
+		int cornerCCW = direction/2;
+		if(cornerCW == 4) cornerCW = 0;
 		
 		PointD pointCW = Utility.getCorner(target.getBoundingRectangle(), cornerCW);
 		PointD pointCCW = Utility.getCorner(target.getBoundingRectangle(), cornerCCW);
@@ -157,12 +158,21 @@ public class Level {
 		pointCW.addPoint(offsetD);
 		pointCCW.addPoint(offsetD);
 		
-		for(Polygon walls : polygonCollisions) {
+		for(MapObject objectToCheck : polygonCollisions) {
+			Polygon walls = ((PolygonMapObject) objectToCheck).getPolygon();
 			if(walls.contains((float) pointCW.x, (float) pointCW.y) || walls.contains((float) pointCCW.x, (float) pointCCW.y)) {
-				return true;
+				
+				MapProperties props = objectToCheck.getProperties();
+				boolean meh = props.containsKey("Slope");
+				if(props.containsKey("Slope")) {
+					String cool = (String) props.get("Slope");
+					//System.out.println(cool);
+				}
+				
+				return objectToCheck;
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	

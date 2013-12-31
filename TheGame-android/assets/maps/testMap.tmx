@@ -25,13 +25,13 @@
   </object>
   <object name="Slopeman" x="416" y="448">
    <properties>
-    <property name="Slope" value="1"/>
+    <property name="Slope" value="45"/>
    </properties>
    <polygon points="0,0 16,-16 16,0"/>
   </object>
   <object x="426" y="449">
    <properties>
-    <property name="Slope" value="1"/>
+    <property name="Slope" value="45"/>
    </properties>
    <polygon points="-58,15 -42,-1 -42,15"/>
   </object>
