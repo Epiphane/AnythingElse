@@ -2,7 +2,8 @@ package com.gilded.thegame;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapProperties;
 
 public class Entity extends Sprite {
 	public static final float MAX_FALL_SPEED = -0.5f;
@@ -68,26 +69,23 @@ public class Entity extends Sprite {
 
 		float w = getWidth();
 		float h = getHeight();
-//		onGround = false;
-//		againstRWall = false;
-//		againstLWall = false;
 
 		// First, try to move horizontally
 		if (currentLevel.canMove(x + dx, y, w, h)) {
 			x += dx;
 		} else {
 			// Slope?
-			if (currentLevel.canMove(x + dx, y + dy + 0.5f, w, h)) {
+			/*if (currentLevel.canMove(x + dx, y + dy + 0.5f, w, h)) {
 				x += dx;
 				y += Math.abs(dx);
 			}
 			// Nope. Definitely a wall
-			else {
+			else {*/ //TODO: remove
 				// Hit a wall
 				hitWall(dx, dy);
 				if(dx != 0 && dy < 0)
 					this.dy = 0;
-			}
+			//}
 		}
 
 		// Next, move vertically
@@ -135,14 +133,41 @@ public class Entity extends Sprite {
 	}
 
 	/**
-	 * 
-	 * @param direction
+	 * Looks in the specified direction for a wall.  If there is one, returns true. Otherwise
+	 * returns false.
+	 * @param direction Which direction to look for a wall
 	 */
 	public boolean checkDirection(int direction) {
-		if(currentLevel.checkFoot(this, direction)) {
+		MapObject collider = currentLevel.checkFoot(this, direction);
+		if(collider != null) {
+			
+			MapProperties props = collider.getProperties();
+			if(props.containsKey("Slope")) {
+				int slope = Integer.parseInt((String) props.get("Slope"));
+				System.out.println(slope);
+				adjustForSlope(slope);
+			}
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Given a slope, converts this entity's dx and dy so that they appropriately move on the slope.
+	 * @param slope The slope value of the slope we're on, in degrees
+	 */
+	public void adjustForSlope(int slope) {
+		int entityAngle = (int) (Math.atan(dy / dx) * 180 / Math.PI);
+		entityAngle = (entityAngle + 360) % 360;
+		
+		// If the player isn't moving towards the slope, we can ignore it safely.
+		if(entityAngle > slope && entityAngle < slope + 180) 
+			return;
+		
+		double newSpeed = Math.sin(slope + entityAngle) * (dx + dy);
+		newSpeed *= 8;
+		dy = (float) (Math.sin(slope) * newSpeed);
+		dx = (float) (Math.sin(slope) * newSpeed);
 	}
 }
