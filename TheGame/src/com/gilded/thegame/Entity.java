@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Entity extends Sprite {
 	public static final float MAX_FALL_SPEED = -0.5f;
-	public static final float GRAVITY = -0.020f;
+	public static final float GRAVITY = -0.015f;
 
 	/** What level am I in? */
 	protected Level currentLevel;

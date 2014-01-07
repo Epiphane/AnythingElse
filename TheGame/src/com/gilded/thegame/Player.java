@@ -10,7 +10,8 @@ public class Player extends Entity {
 	public static final float JUMP_DY = 0.4f;
 	public static final float JUMP_DX_OFF_WALL = 0.25f;
 	public static final float WALK_SPEED = TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS / 24f;
-	public static final float WALK_FRICTION = 0.93f;
+	public static final float WALK_ACCELERATION = WALK_SPEED / 100f;
+	public static final float WALK_FRICTION = 0.33f;
 
 	private int frame;
 	private boolean walking;
@@ -128,13 +129,13 @@ public class Player extends Entity {
 		// First, set direction we plan to move and do actions
 		if(!ignoreInput) {
 			if(input.buttonStack.walkDirection() == -1 && dx > -WALK_SPEED) {
-				dx -= WALK_SPEED / 10f;
+				dx -= WALK_ACCELERATION;
 				walking = true;
 				if(dx < 0)
 					facingRight = false;
 			}
 			else if(input.buttonStack.walkDirection() == 1 && dx < WALK_SPEED) {
-				dx += WALK_SPEED / 10f;
+				dx += WALK_ACCELERATION;
 				walking = true;
 				if(dx > 0)
 					facingRight = true;
