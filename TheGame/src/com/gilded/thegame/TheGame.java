@@ -11,6 +11,8 @@ public class TheGame implements ApplicationListener {
 	public final static float MULTIPLIER_FOR_GOOD_CALCULATIONS = 3;
 	public final static float TILE_SIZE = 16;
 	
+	public final static float FRAMERATE = 60f;
+	
 	private GameState gameState;
 
 	/**
@@ -45,12 +47,12 @@ public class TheGame implements ApplicationListener {
 	public void render() {		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		/*accumulatedTime += Gdx.graphics.getDeltaTime();
-		while(accumulatedTime > 1.0f / 60.0f && running) {*/
+		accumulatedTime += Gdx.graphics.getDeltaTime();
+		while(accumulatedTime > 1.0f / FRAMERATE) {
 			gameState.tick(input);
 			input.tick();
-			/*accumulatedTime -= 1.0f / 60.0f;	
-		}*/
+			accumulatedTime -= 1.0f / FRAMERATE;
+		}
 		gameState.render();
 	}
 	

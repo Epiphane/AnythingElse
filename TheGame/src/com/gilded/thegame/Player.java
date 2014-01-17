@@ -9,8 +9,8 @@ public class Player extends Entity {
 	
 	public static final float JUMP_DY = 0.4f;
 	public static final float JUMP_DX_OFF_WALL = 0.25f;
-	public static final float WALK_SPEED = TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS / 24f;
-	public static final float WALK_ACCELERATION = WALK_SPEED / 100f;
+	public static final float WALK_SPEED = TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS / 16f;
+	public static final float WALK_ACCELERATION = WALK_SPEED / 16f;
 	public static final float WALK_FRICTION = 0.33f;
 
 	private int frame;
@@ -128,21 +128,30 @@ public class Player extends Entity {
 		}
 		// First, set direction we plan to move and do actions
 		if(!ignoreInput) {
-			if(input.buttonStack.walkDirection() == -1 && dx > -WALK_SPEED) {
-				dx -= WALK_ACCELERATION;
-				walking = true;
-				if(dx < 0)
-					facingRight = false;
-			}
-			else if(input.buttonStack.walkDirection() == 1 && dx < WALK_SPEED) {
-				dx += WALK_ACCELERATION;
-				walking = true;
-				if(dx > 0)
-					facingRight = true;
+			if(false) {
+				dx = WALK_SPEED * input.buttonStack.walkDirection();
+				walking = (input.buttonStack.walkDirection() != 0);
 			}
 			else {
-				dx *= WALK_FRICTION;
-				walking = false;
+				
+				// TODO: Implement this kind of stuff later, once we have basic mechanics at least down and working.
+				// Fancy stuff can come later
+				if(input.buttonStack.walkDirection() == -1 && dx >= -WALK_SPEED) {
+					dx -= WALK_ACCELERATION;
+					walking = true;
+					if(dx < 0)
+						facingRight = false;
+				}
+				else if(input.buttonStack.walkDirection() == 1 && dx <= WALK_SPEED) {
+					dx += WALK_ACCELERATION;
+					walking = true;
+					if(dx > 0)
+						facingRight = true;
+				}
+				else if(input.buttonStack.walkDirection() == 0) {
+					dx *= WALK_FRICTION;
+					walking = false;
+				}
 			}
 		}
 
@@ -182,10 +191,10 @@ public class Player extends Entity {
 			this.setRegion(Art.dashCharacter[DASH_TICKS - ticksRemaining][0]);
 			this.setRotation(Utility.dirToDegree(dashDirection));
 		}
-		else if(againstLWall) {
+		else if(!onGround && againstLWall && dx != 0) {
 			// Draw character against wall
 			this.setRegion(Art.mainCharacter[CLING_TO_WALL_TICKS - ticksRemaining][1]);
-		} else if(againstRWall) {
+		} else if(!onGround && againstRWall && dx != 0) {
 			this.setRegion(Art.mainCharacter[CLING_TO_WALL_TICKS - ticksRemaining][1]);
 			this.flip(true, false);
 		} else {

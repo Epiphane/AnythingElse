@@ -50,12 +50,12 @@ public class Entity extends Sprite {
 	 * AI, walking off, and the like.
 	 */
 	public void tick() {
+		if (currentLevel == null) // Do nothing if we're not in a world
+			return;
+		
 		onGround = checkDirection(Input.DOWN);
 		againstRWall = checkDirection(Input.RIGHT);
 		againstLWall = checkDirection(Input.LEFT);
-		
-		if (currentLevel == null) // Do nothing if we're not in a world
-			return;
 	}
 
 	/**
@@ -75,22 +75,32 @@ public class Entity extends Sprite {
 			x += dx;
 		} else {
 			// Slope?
-			/*if (currentLevel.canMove(x + dx, y + dy + 0.5f, w, h)) {
+			if (currentLevel.canMove(x + dx, y + Math.abs(dx), w, h)) {
 				x += dx;
 				y += Math.abs(dx);
 			}
 			// Nope. Definitely a wall
-			else {*/ //TODO: remove
+			else { //TODO: remove
 				// Hit a wall
 				hitWall(dx, dy);
-				if(dx != 0 && dy < 0)
+				if(dx != 0 && dy < 0) {
 					this.dy = 0;
-			//}
+					onGround = false;
+				}
+			}
 		}
 
 		// Next, move vertically
 		if (currentLevel.canMove(x, y + dy, w, h)) {
 			y += dy;
+			
+			// What if we're above something really close? "Step" down
+			// Any slope that's less than a 45 degree drop
+			if(dy < 0 && Math.abs(dy) < Math.abs(dx)) {
+				if(!currentLevel.canMove(x-dx, y - Math.abs(dx), w, h)) {
+					hitWall(0, -Math.abs(dx));
+				}
+			}
 		} else {
 			// Hit the wall
 			hitWall(dx, dy);
@@ -113,7 +123,16 @@ public class Entity extends Sprite {
 			x -= dx * 0.01;
 			y -= dy * 0.01;
 		}
-
+		
+		// Check to see if we hit something above us
+		if(this.dy > 0 && !currentLevel.canMove(x, y + 0.5f, getWidth(), getHeight())) {
+			this.dy = 0;
+		}
+		
+		if(dy < 0) {
+			this.dy = 0;
+			onGround = true;
+		}
 		// Now we figure out which part of you is hitting a surface
 		//onGround = checkFoot()
 	}
@@ -143,9 +162,9 @@ public class Entity extends Sprite {
 			
 			MapProperties props = collider.getProperties();
 			if(props.containsKey("Slope")) {
-				int slope = Integer.parseInt((String) props.get("Slope"));
-				System.out.println(slope);
-				adjustForSlope(slope);
+//				int slope = Integer.parseInt((String) props.get("Slope"));
+//				adjustForSlope(slope);
+				return false;
 			}
 			return true;
 		} else {
@@ -161,13 +180,21 @@ public class Entity extends Sprite {
 		int entityAngle = (int) (Math.atan(dy / dx) * 180 / Math.PI);
 		entityAngle = (entityAngle + 360) % 360;
 		
+		System.out.println("Entity: " + entityAngle);
+		
 		// If the player isn't moving towards the slope, we can ignore it safely.
 		if(entityAngle > slope && entityAngle < slope + 180) 
 			return;
 		
-		double newSpeed = Math.sin(slope + entityAngle) * (dx + dy);
-		newSpeed *= 8;
+//		double newSpeed = Math.sin(slope + entityAngle) * (dx + dy);
+//		newSpeed *= 8;
+
+		System.out.print("Old: ["+dx+","+dy+"]");
+		double newSpeed = Math.sqrt(dx * dx + dy * dy);
+		newSpeed *= 5;
 		dy = (float) (Math.sin(slope) * newSpeed);
-		dx = (float) (Math.sin(slope) * newSpeed);
+		dx = (float) (Math.cos(slope) * newSpeed);
+		
+		System.out.println("New: ["+dx+","+dy+"]");
 	}
 }

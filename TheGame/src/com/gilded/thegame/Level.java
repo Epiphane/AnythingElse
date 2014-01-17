@@ -162,12 +162,10 @@ public class Level {
 			Polygon walls = ((PolygonMapObject) objectToCheck).getPolygon();
 			if(walls.contains((float) pointCW.x, (float) pointCW.y) || walls.contains((float) pointCCW.x, (float) pointCCW.y)) {
 				
-				MapProperties props = objectToCheck.getProperties();
-				boolean meh = props.containsKey("Slope");
-				if(props.containsKey("Slope")) {
-					String cool = (String) props.get("Slope");
-					//System.out.println(cool);
-				}
+//				MapProperties props = objectToCheck.getProperties();
+//				if(props.containsKey("Slope")) {
+//					String cool = (String) props.get("Slope");
+//				}
 				
 				return objectToCheck;
 			}
