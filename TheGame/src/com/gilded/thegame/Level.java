@@ -17,7 +17,7 @@ public class Level {
 	private Camera camera;
 	private TiledMap map;
 	private ArrayList<MapObject> polygonCollisions;
-	private OrthogonalTiledMapRenderer renderer;
+	private TiledMapRenderer renderer;
 	
 	/** 
 	 * Width and height of the level in tiles
@@ -53,18 +53,13 @@ public class Level {
 		height = (Integer) map.getProperties().get("height");
 		
 		// Create renderer
-		renderer = new OrthogonalTiledMapRenderer(map, 1 / TheGame.TILE_SIZE);
+		renderer = new TiledMapRenderer(map, 1 / TheGame.TILE_SIZE);
 		renderer.setView(camera);
 		
 		batch = renderer.getSpriteBatch();
 		
 		camera.setFocus(this.mainCharacter, true);
 		camera.update(width, height);
-		
-		/** TODO: REMOVE DEBUG CODE */
-		MapProperties mp = map.getProperties();
-		Iterator<String> stringit = mp.getKeys();
-		MapObjects mo = map.getLayers().get(2).getObjects();
 		
 		polygonCollisions = new ArrayList<MapObject>();
 		for(MapObject object : map.getLayers().get(2).getObjects()) {
@@ -78,6 +73,11 @@ public class Level {
 	 * Update the level
 	 */
 	public void tick(Input input) {
+		int newColor = input.getNewColor();
+		if(newColor != 0) {
+			changeColor(newColor);
+			input.freeNewColor();
+		}
 		mainCharacter.tick(input);
 	}
 	
@@ -89,7 +89,7 @@ public class Level {
 		renderer.setView(camera);
 		renderer.render();
 		batch.begin();
-		mainCharacter.draw(batch);
+		mainCharacter.draw(batch);	
 		batch.end();
 	}
 
@@ -180,6 +180,15 @@ public class Level {
 				(Integer) spawn.getProperties().get("y") / TheGame.TILE_SIZE);
 		
 		camera.rush();
+	}
+	
+	/**
+	 * Changes the world to be a new color!
+	 * 
+	 * @param color
+	 */
+	public void changeColor(int color) {
+		mainCharacter.changeColor(color);
 	}
 	
 	public Camera getCamera() {
