@@ -10,8 +10,8 @@ public class Main {
 		cfg.useGL20 = true;
 		cfg.fullscreen = false;
 		cfg.resizable = false;
-		cfg.width = 800;
-		cfg.height = 451;
+		cfg.width = 1600;
+		cfg.height = 900;
 		cfg.vSyncEnabled = true;
 		
 		new LwjglApplication(new TheGame(), cfg);
