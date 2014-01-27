@@ -9,15 +9,15 @@ public class Art {
 	public final static int DIRECTIONS = 4;
 	
 	public static TextureRegion[][] mainCharacter;
+	public static TextureRegion[][] mainCharacterRed;
 	public static TextureRegion[][] mainCharacterStanding;
 	public static byte[][] mainCharacterMap;
-	public static TextureRegion[][] dashCharacter;
 	
 	public static boolean loaded = false;
 	
 	public static void load () {
 		mainCharacter = split("img/player.png", 16, 19);
-		dashCharacter = split("img/dashing.png", 16, 19);
+		mainCharacterRed = split("img/player_red.png", 16, 19);
 		
 		loaded = true;
 	}

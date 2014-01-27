@@ -7,7 +7,7 @@ import com.badlogic.gdx.maps.MapProperties;
 
 public class Entity extends Sprite {
 	public static final float MAX_FALL_SPEED = -0.5f;
-	public static final float GRAVITY = -0.015f;
+	public static final float GRAVITY = -0.020f;
 
 	/** What level am I in? */
 	protected Level currentLevel;
@@ -196,5 +196,9 @@ public class Entity extends Sprite {
 		dx = (float) (Math.cos(slope) * newSpeed);
 		
 		System.out.println("New: ["+dx+","+dy+"]");
+	}
+	
+	public void changeColor(int color) {
+		System.out.println("I changed colors to "+color+"! Who knows what I'm supposed to do!");
 	}
 }

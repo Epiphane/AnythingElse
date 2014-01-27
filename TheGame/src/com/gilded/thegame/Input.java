@@ -160,19 +160,36 @@ public class Input implements InputProcessor {
 	public static final int GLIDE = 11;
 	public static final int STOMP = 12;
 	
+	// Color keys (AHAHA ES FUNNY JOKE...BECAUSE...COLORKEY...HA)
+	public static final int RED = 1;
+	public static final int BLUE = 2;
+	public static final int GREEN = 4;
+	
 	
     /** Defines the direction to perform an action if the user has nothing held down. */
 	public final static int DEFAULT_DIRECTION = UP;
+	
+	/** A reasonable measurement for how long someone might have let go of one
+	 * key but been meaning to let go of it WITH another key. For example if you
+	 * wanted to press QW at the same time, you let go of them within ~20ms
+	 */
+	private static final long REASONABLE_KEYRELEASE_DELAY = 50;
 	
 	// Button arrays
 	public boolean[] buttons = new boolean[32];
 	public boolean[] oldButtons = new boolean[32];
 	
 	public InputStack buttonStack;
+	
+	private long[] colorDelays;
+	private int currentColor;
+	public int colorChoice;
 
 	public Input() {
 		super();
 		buttonStack = new InputStack();
+		
+		colorDelays = new long[8];
 	}
 	
 	/**
@@ -188,13 +205,18 @@ public class Input implements InputProcessor {
 		
 		// Go through key possibilities for recognized input
 		if (key == Keys.DPAD_UP)    button = UP;
-		if (key == Keys.DPAD_DOWN)  button = DOWN;
-		if (key == Keys.DPAD_LEFT)  button = LEFT;
-		if (key == Keys.DPAD_RIGHT) button = RIGHT;
-		if (key == Keys.Z)          button = DASH;
+		else if (key == Keys.DPAD_DOWN)  button = DOWN;
+		else if (key == Keys.DPAD_LEFT)  button = LEFT;
+		else if (key == Keys.DPAD_RIGHT) button = RIGHT;
+		else if (key == Keys.Z)          button = DASH;
 		//if (key == Keys.Z) 			button = ACTION;
-		if (key == Keys.S)          button = GLIDE;
-		if (key == Keys.SHIFT_LEFT) button = STOMP;
+		else if (key == Keys.S)          button = GLIDE;
+		else if (key == Keys.SHIFT_LEFT) button = STOMP;
+		
+		// Handle colors differently, since they're stored in a different array
+		else if (key == Keys.Q)          setColor(RED, down);
+		else if (key == Keys.W)          setColor(BLUE, down);
+		else if (key == Keys.E)          setColor(GREEN, down);
 		
 		// If it's recognized, set the state in the array
 		if(button >= 0) {
@@ -206,8 +228,41 @@ public class Input implements InputProcessor {
 			}
 		}
 		
-		//Running is a special case.  We just want to toggle running based on
-		//Did you forget about this comment halfway through?                 ^^^^
+		//Thomas: Running is a special case.  We just want to toggle running based on
+		//Elliot: Did you forget about this comment halfway through?                 ^^^^
+		//Guess so. DERP
+		
+		
+	}
+	
+	private void setColor(int color, boolean pressed) {
+		if(pressed)
+			currentColor |= color;
+		else {
+			currentColor ^= color;
+			colorDelays[color - 1] = System.currentTimeMillis();
+		}
+		
+		if(currentColor == 0) {
+			colorChoice = 0;
+			long endTime = System.currentTimeMillis();
+			for(int i = 1; i <= colorDelays.length; i ++) {
+				if(endTime - colorDelays[i - 1] < REASONABLE_KEYRELEASE_DELAY)
+					colorChoice += i;
+			}
+		}
+	}
+	
+	public int getNewColor() {
+		return colorChoice;
+	}
+	
+	/**
+	 * Call this after you use the information from getNewColor(),
+	 * to free colorChoice for the next change
+	 */
+	public void freeNewColor() {
+		colorChoice = 0;
 	}
 	
 	/**
