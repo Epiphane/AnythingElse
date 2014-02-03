@@ -9,6 +9,8 @@ public class Player extends Entity {
 	public static final int PRANCER = 2;
 	public static final int FLACCID = 3;
 	
+	public static int ANIMATION_TIMEPER = 8;
+	
 	public static final float JUMP_DY = 0.4f;
 	public static final float JUMP_DX_OFF_WALL = 0.25f;
 	public static final float WALK_SPEED = TheGame.MULTIPLIER_FOR_GOOD_CALCULATIONS / 16f;
@@ -176,8 +178,8 @@ public class Player extends Entity {
 		}
 		
 		// Run the animations
-		if(walking) {
-			if(++frame > 8)
+		if(true | walking) {
+			if(++frame >= ANIMATION_TIMEPER * currentSpriteSheet.length)
 				frame = 0;
 		}
 		
@@ -197,7 +199,7 @@ public class Player extends Entity {
 			this.flip(true, false);
 		} else {
 			// Draw walking character
-			this.setRegion(currentSpriteSheet[frame/3][0]);
+			this.setRegion(currentSpriteSheet[frame/ANIMATION_TIMEPER][0]);
 			if(!facingRight)
 				this.flip(true, false);
 			

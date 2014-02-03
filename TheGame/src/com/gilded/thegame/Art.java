@@ -18,6 +18,7 @@ public class Art {
 		mainCharacter = new TextureRegion[Input.colors.length][][];
 		mainCharacter[0] = split("img/player.png", 16, 19);
 		mainCharacter[Input.RED] = split("img/player_red.png", 16, 19);
+		mainCharacter[Input.BLUE] = split("img/uh.png", 32, 32);
 		mainCharacter[Input.GREEN] = split("img/player.png", 16, 19);
 		
 		loaded = true;
