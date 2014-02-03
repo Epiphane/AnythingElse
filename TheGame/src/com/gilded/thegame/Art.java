@@ -5,10 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Art {
-	
 	public final static int DIRECTIONS = 4;
 	
-	public static TextureRegion[][] mainCharacter;
+	public static TextureRegion[][][] mainCharacter;
 	public static TextureRegion[][] mainCharacterRed;
 	public static TextureRegion[][] mainCharacterStanding;
 	public static byte[][] mainCharacterMap;
@@ -16,11 +15,13 @@ public class Art {
 	public static boolean loaded = false;
 	
 	public static void load () {
-		mainCharacter = split("img/player.png", 16, 19);
-		mainCharacterRed = split("img/player_red.png", 16, 19);
+		mainCharacter = new TextureRegion[Input.colors.length][][];
+		mainCharacter[0] = split("img/player.png", 16, 19);
+		mainCharacter[Input.RED] = split("img/player_red.png", 16, 19);
+		mainCharacter[Input.GREEN] = split("img/player.png", 16, 19);
 		
 		loaded = true;
-	}
+	} 
 
 	public static TextureRegion load (String name, int width, int height) {
 		Texture texture = new Texture(Gdx.files.internal(name));

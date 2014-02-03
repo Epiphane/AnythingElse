@@ -161,6 +161,7 @@ public class Input implements InputProcessor {
 	public static final int STOMP = 12;
 	
 	// Color keys (AHAHA ES FUNNY JOKE...BECAUSE...COLORKEY...HA)
+	public static final String[] colors = { "black", "red", "blue", "purple", "green", "yellow", "cyan", "white" };
 	public static final int RED = 1;
 	public static final int BLUE = 2;
 	public static final int GREEN = 4;

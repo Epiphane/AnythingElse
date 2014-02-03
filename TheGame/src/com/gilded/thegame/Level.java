@@ -1,19 +1,20 @@
 package com.gilded.thegame;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Polygon;
 
 public class Level {
+	public  static int numTilesInEachSet;
+	
 	private Camera camera;
 	private TiledMap map;
 	private ArrayList<MapObject> polygonCollisions;
@@ -40,6 +41,8 @@ public class Level {
 		camera.update(width, height);
 		
 		map = new TmxMapLoader().load("maps/"+mapName);
+		
+		numTilesInEachSet = (Integer) map.getTileSets().getTileSet(1).getProperties().get("firstgid") - 1;
 		
 		this.mainCharacter = mainCharacter;
 		this.mainCharacter.setCurrentLevel(this);
@@ -189,6 +192,47 @@ public class Level {
 	 */
 	public void changeColor(int color) {
 		mainCharacter.changeColor(color);
+		
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
+
+		int layerWidth = layer.getWidth();
+		int layerHeight = layer.getHeight();
+		
+		float unitScale = 1 / TheGame.TILE_SIZE;
+
+		float layerTileWidth = layer.getTileWidth() * unitScale;
+		float layerTileHeight = layer.getTileHeight() * unitScale;
+
+		float y = 0;
+		float xStart = 0;
+		
+		// Check to see if we have a tileset for this color. if so, replace all tiles
+		TiledMapTileSet newTileSet = map.getTileSets().getTileSet(Input.colors[color]);
+		if(newTileSet != null) {
+			int offset = (Integer) newTileSet.getProperties().get("firstgid") - 1;
+			
+			TiledMapTile newTile;
+			for (int row = 0; row < layerHeight; row++) {
+				float x = xStart;
+				for (int col = 0; col < layerWidth; col++) {
+					final TiledMapTileLayer.Cell cell = layer.getCell(col, row);
+					if(cell == null) {
+						x += layerTileWidth;
+						continue;
+					}
+					final TiledMapTile tile = cell.getTile();
+	
+					if (tile != null) {
+						int nt = tile.getId() % numTilesInEachSet + offset;
+						if(map.getTileSets().getTile(nt) != null) {
+							newTile = map.getTileSets().getTile(nt);
+							cell.setTile(newTile);
+	//						System.out.println(tile.getId()+"->"+);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public Camera getCamera() {

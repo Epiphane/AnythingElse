@@ -51,9 +51,9 @@ public class Player extends Entity {
 	public TextureRegion[][] currentSpriteSheet;
 	
 	public Player(int x, int y) {
-		super(x, y, Art.mainCharacter[0][0]);
+		super(x, y, Art.mainCharacter[0][0][0]);
 		
-		currentSpriteSheet = Art.mainCharacter;
+		currentSpriteSheet = Art.mainCharacter[0];
 	}
 	
 	/**
@@ -219,8 +219,8 @@ public class Player extends Entity {
 	}
 
 	public void changeColor(int color) {
-		if(color == 1) {
-			currentSpriteSheet = Art.mainCharacterRed;
+		if(Art.mainCharacter[color] != null) {
+			currentSpriteSheet = Art.mainCharacter[color];
 		}
 	}
 }
