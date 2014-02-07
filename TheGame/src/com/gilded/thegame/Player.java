@@ -179,7 +179,7 @@ public class Player extends Entity {
 		
 		// Run the animations
 		if(true | walking) {
-			if(++frame >= ANIMATION_TIMEPER * currentSpriteSheet.length)
+			if(++frame >= ANIMATION_TIMEPER * 3)
 				frame = 0;
 		}
 		
