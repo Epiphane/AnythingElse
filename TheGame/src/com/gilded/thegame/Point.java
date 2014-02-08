@@ -16,7 +16,7 @@ public class Point {
 	public Point() {
 		this(0, 0);
 	}
-	
+
 	/** Translates this Point BY the coordinates of the given Point. */
 	public void addPoint(Point adder) {
 		x += adder.x;
@@ -32,6 +32,10 @@ public class Point {
 		// Compare their x and y values!
 		Point otherp = (Point) other;
 		return otherp.x == x && otherp.y == y;
+	}
+	
+	public String toString() {
+		return "[" + x + ", " + y + "]";
 	}
 }
 

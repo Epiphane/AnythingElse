@@ -150,6 +150,10 @@ public class Entity extends Sprite {
 		this.x = x;
 		this.y = y;
 	}
+	
+	public Point getCoords() {
+		return new Point((int) x, (int) y);
+ 	}
 
 	/**
 	 * Looks in the specified direction for a wall.  If there is one, returns true. Otherwise

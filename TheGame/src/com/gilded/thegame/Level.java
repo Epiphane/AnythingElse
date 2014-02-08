@@ -29,6 +29,10 @@ public class Level {
 	
 	private Player mainCharacter;
 	
+	private int changeColorRange;
+	private int changeColor;
+	private Point changeColorOrigin;
+	
 	/**
 	 * Initialize the map.
 	 * 
@@ -41,6 +45,7 @@ public class Level {
 		camera.update(width, height);
 		
 		map = new TmxMapLoader().load("maps/"+mapName);
+		changeColor = -1;
 		
 		numTilesInEachSet = (Integer) map.getTileSets().getTileSet(1).getProperties().get("firstgid") - 1;
 		
@@ -81,6 +86,7 @@ public class Level {
 			changeColor(newColor);
 			input.freeNewColor();
 		}
+		updateTiles();
 		mainCharacter.tick(input);
 	}
 	
@@ -193,41 +199,56 @@ public class Level {
 	public void changeColor(int color) {
 		mainCharacter.changeColor(color);
 		
+		changeColor = color;
+		changeColorRange = 0;
+		changeColorOrigin = mainCharacter.getCoords();
+		changeTiles(2);
+	}
+
+	public void updateTiles() {
+		if(changeColor >= 0)
+			changeTiles(changeColorRange++);
+	}
+	
+	public void changeTiles(int range) {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
 
 		int layerWidth = layer.getWidth();
 		int layerHeight = layer.getHeight();
 		
-		float unitScale = 1 / TheGame.TILE_SIZE;
-
-		float layerTileWidth = layer.getTileWidth() * unitScale;
-		float layerTileHeight = layer.getTileHeight() * unitScale;
-
-		float y = 0;
-		float xStart = 0;
+		int rowStart = Math.max(0, changeColorOrigin.y - range);
+		int colStart = Math.max(0, changeColorOrigin.x - range);
+		int rowEnd = Math.min(layerHeight, changeColorOrigin.y + range);
+		int colEnd = Math.min(layerWidth, changeColorOrigin.x + range);
+		
+		// If we've done the whole layer, stop computing
+		if(rowStart == 0 && rowEnd == layerHeight && colStart == 0 && colEnd == layerWidth) {
+			changeColor = -1;
+			return;
+		}
 		
 		// Check to see if we have a tileset for this color. if so, replace all tiles
-		TiledMapTileSet newTileSet = map.getTileSets().getTileSet(Input.colors[color]);
+		TiledMapTileSet newTileSet = map.getTileSets().getTileSet(Input.colors[changeColor]);
 		if(newTileSet != null) {
 			int offset = (Integer) newTileSet.getProperties().get("firstgid") - 1;
 			
 			TiledMapTile newTile;
-			for (int row = 0; row < layerHeight; row++) {
-				float x = xStart;
-				for (int col = 0; col < layerWidth; col++) {
-					final TiledMapTileLayer.Cell cell = layer.getCell(col, row);
-					if(cell == null) {
-						x += layerTileWidth;
-						continue;
-					}
-					final TiledMapTile tile = cell.getTile();
-	
-					if (tile != null) {
-						int nt = tile.getId() % numTilesInEachSet + offset;
-						if(map.getTileSets().getTile(nt) != null) {
-							newTile = map.getTileSets().getTile(nt);
-							cell.setTile(newTile);
-	//						System.out.println(tile.getId()+"->"+);
+			for (int row = rowStart; row < rowEnd; row++) {
+				for (int col = colStart; col < colEnd; col++) {
+					// Only do the square at range distance
+					if(true || row == rowStart || row == rowEnd || col == colStart || col == colEnd) {
+						final TiledMapTileLayer.Cell cell = layer.getCell(col, row);
+						if(cell == null) {
+							continue;
+						}
+						final TiledMapTile tile = cell.getTile();
+		
+						if (tile != null) {
+							int nt = tile.getId() % numTilesInEachSet + offset;
+							if(map.getTileSets().getTile(nt) != null) {
+								newTile = map.getTileSets().getTile(nt);
+								cell.setTile(newTile);
+							}
 						}
 					}
 				}
