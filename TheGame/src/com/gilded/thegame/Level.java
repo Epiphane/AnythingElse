@@ -148,8 +148,8 @@ public class Level {
 		offsetD.x *= 0.2;
 		offsetD.y *= 0.2;
 		
-		float centerX = (target.getX() + target.getWidth()/2) * TheGame.TILE_SIZE;
-		float centerY = (target.getY() + target.getHeight()/2) * TheGame.TILE_SIZE;
+//		float centerX = (target.getX() + target.getWidth()/2) * TheGame.TILE_SIZE;
+//		float centerY = (target.getY() + target.getHeight()/2) * TheGame.TILE_SIZE;
 
 		// Grab the location of the corners we want to check
 		int cornerCW = direction/2 + 1;
@@ -171,7 +171,6 @@ public class Level {
 		for(MapObject objectToCheck : polygonCollisions) {
 			Polygon walls = ((PolygonMapObject) objectToCheck).getPolygon();
 			if(walls.contains((float) pointCW.x, (float) pointCW.y) || walls.contains((float) pointCCW.x, (float) pointCCW.y)) {
-				System.out.println("touch me baby");
 //				MapProperties props = objectToCheck.getProperties();
 //				if(props.containsKey("Slope")) {
 //					String cool = (String) props.get("Slope");

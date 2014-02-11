@@ -72,7 +72,6 @@ public class Player extends Entity {
 		super.tick();
 		
 		// Reset double jump when on ground
-		System.out.println("On ground? " + onGround);
 		if (onGround)
 			doubleJumpReady = true;
 	

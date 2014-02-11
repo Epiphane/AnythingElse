@@ -161,7 +161,6 @@ public class Entity extends Sprite {
 	 * @param direction Which direction to look for a wall
 	 */
 	public boolean checkDirection(int direction) {
-		System.out.println("Checking " + direction);
 		MapObject collider = currentLevel.checkFoot(this, direction);
 		if(collider != null) {
 			MapProperties props = collider.getProperties();
