@@ -30,6 +30,10 @@ public class Player extends Entity {
 	/* During dashes or stone mode we want to ignore input but still keep it in the stack. */
 	public boolean ignoreInput = false;
 	
+	/* Double jump */
+	private boolean doubleJumpReady = true;
+	public static final boolean CAN_DOUBLE_JUMP = true;
+	
 	/* Dashing through the snow... */
 	private boolean dashing = false;
 	public static final float DASHSPEED = 0.6f;
@@ -67,13 +71,28 @@ public class Player extends Entity {
 	{
 		super.tick();
 		
+		// Reset double jump when on ground
+		System.out.println("On ground? " + onGround);
+		if (onGround)
+			doubleJumpReady = true;
 	
 		// Jump
-		if(input.buttonStack.shouldJump() && (onGround || againstLWall || againstRWall)) {
-			dy = JUMP_DY;
-			if(!onGround) { // Just hangin' on..
-				if(againstRWall) dx = -JUMP_DX_OFF_WALL;
-				else if(againstLWall) dx = JUMP_DX_OFF_WALL;
+		if(input.buttonStack.shouldJump()) {
+			if(onGround) {
+				dy = JUMP_DY;
+			} else { 
+				if(againstRWall) { // Just hangin' on..
+					dy = JUMP_DY;
+					dx = -JUMP_DX_OFF_WALL; 
+					doubleJumpReady = true;
+				} else if(againstLWall) {
+					dy = JUMP_DY;
+					dx = JUMP_DX_OFF_WALL;
+					doubleJumpReady = true;
+				} else if(doubleJumpReady && CAN_DOUBLE_JUMP) {
+					dy = JUMP_DY;
+					doubleJumpReady = false;
+				}
 			}
 		}
 		

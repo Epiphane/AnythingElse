@@ -85,7 +85,7 @@ public class Entity extends Sprite {
 				hitWall(dx, dy);
 				if(dx != 0 && dy < 0) {
 					this.dy = 0;
-					onGround = false;
+					//onGround = false;
 				}
 			}
 		}
@@ -131,7 +131,7 @@ public class Entity extends Sprite {
 		
 		if(dy < 0) {
 			this.dy = 0;
-			onGround = true;
+			//onGround = true;
 		}
 		// Now we figure out which part of you is hitting a surface
 		//onGround = checkFoot()
@@ -161,9 +161,9 @@ public class Entity extends Sprite {
 	 * @param direction Which direction to look for a wall
 	 */
 	public boolean checkDirection(int direction) {
+		System.out.println("Checking " + direction);
 		MapObject collider = currentLevel.checkFoot(this, direction);
 		if(collider != null) {
-			
 			MapProperties props = collider.getProperties();
 			if(props.containsKey("Slope")) {
 //				int slope = Integer.parseInt((String) props.get("Slope"));

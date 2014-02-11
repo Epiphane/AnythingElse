@@ -145,11 +145,11 @@ public class Level {
 	public MapObject checkFoot(Entity target, int direction) {
 		Point offset = Utility.offsetFromDirection(direction);
 		PointD offsetD = new PointD(offset.x, offset.y);
-		offsetD.x *= 0.1;
-		offsetD.y *= 0.1;
+		offsetD.x *= 0.2;
+		offsetD.y *= 0.2;
 		
-//		float centerX = (target.getX() + target.getWidth()/2) * TheGame.TILE_SIZE;
-//		float centerY = (target.getY() + target.getHeight()/2) * TheGame.TILE_SIZE;
+		float centerX = (target.getX() + target.getWidth()/2) * TheGame.TILE_SIZE;
+		float centerY = (target.getY() + target.getHeight()/2) * TheGame.TILE_SIZE;
 
 		// Grab the location of the corners we want to check
 		int cornerCW = direction/2 + 1;
@@ -160,17 +160,18 @@ public class Level {
 		PointD pointCCW = Utility.getCorner(target.getBoundingRectangle(), cornerCCW);
 		pointCW.mult(TheGame.TILE_SIZE);
 		pointCCW.mult(TheGame.TILE_SIZE);
-//		System.out.println("Center: " + centerX + ", " + centerY);
-//		System.out.println("Clockwise pt: " + pointCW.x + ", " + pointCW.y);
-//		System.out.println("Counterclockwise pt: " + pointCCW.x + ", " + pointCCW.y);
 		
 		pointCW.addPoint(offsetD);
 		pointCCW.addPoint(offsetD);
 		
+//		System.out.println("Center: " + centerX + ", " + centerY);
+//		System.out.println("Clockwise pt: " + pointCW.x + ", " + pointCW.y);
+//		System.out.println("Counterclockwise pt: " + pointCCW.x + ", " + pointCCW.y);
+		
 		for(MapObject objectToCheck : polygonCollisions) {
 			Polygon walls = ((PolygonMapObject) objectToCheck).getPolygon();
 			if(walls.contains((float) pointCW.x, (float) pointCW.y) || walls.contains((float) pointCCW.x, (float) pointCCW.y)) {
-				
+				System.out.println("touch me baby");
 //				MapProperties props = objectToCheck.getProperties();
 //				if(props.containsKey("Slope")) {
 //					String cool = (String) props.get("Slope");
